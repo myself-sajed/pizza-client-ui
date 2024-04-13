@@ -3,9 +3,7 @@ import Link from "next/link"
 import { Phone, ShoppingBasket } from "lucide-react"
 import { Button } from "../ui/button"
 
-
-
-const Navbar = () => {
+const Nav = () => {
     return (
         <header className="bg-white">
             <nav className="flex items-center justify-between text-sm container py-3">
@@ -54,4 +52,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Nav

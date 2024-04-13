@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/custom/navbar";
+import Nav from "@/components/custom/Nav";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
       )}
       >
         <div>
-          <Navbar />
+          <Nav />
           <main>
             {children}
           </main>
