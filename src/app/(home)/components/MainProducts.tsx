@@ -1,5 +1,5 @@
 import ProductCard from './ProductCard'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
 const MainProducts = () => {
@@ -12,8 +12,6 @@ const MainProducts = () => {
                     <TabsTrigger className='text-md' value="Pizza">Pizza</TabsTrigger>
                     <TabsTrigger className='text-md' value="Beverages">Beverages</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account">Make changes to your account here.</TabsContent>
-                <TabsContent value="password">Change your password here.</TabsContent>
             </Tabs>
 
 
@@ -35,43 +33,43 @@ export default MainProducts
 const products: Product[] = [
     {
         _id: '1',
-        name: 'Margherita Pizza',
-        description: 'Pizza description',
+        name: 'Paneer Pizza',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 100,
         image: '/assets/pizza-main.png'
     },
     {
         _id: '2',
         name: 'Margherita Pizza',
-        description: 'Pizza description',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 150,
         image: '/assets/pizza-main.png'
     },
     {
         _id: '3',
         name: 'Margherita Pizza',
-        description: 'Pizza description',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 110,
         image: '/assets/pizza-main.png'
     },
     {
         _id: '4',
         name: 'Margherita Pizza',
-        description: 'Pizza description',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 190,
         image: '/assets/pizza-main.png'
     },
     {
         _id: '5',
         name: 'Margherita Pizza',
-        description: 'Pizza description',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 210,
         image: '/assets/pizza-main.png'
     },
     {
         _id: '6',
         name: 'Margherita Pizza',
-        description: 'Pizza description',
+        description: 'This is the best pizza out there for your daily fukcing needs',
         price: 130,
         image: '/assets/pizza-main.png'
     },

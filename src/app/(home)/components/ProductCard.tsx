@@ -3,12 +3,12 @@ import { Product } from "./MainProducts"
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ProductDialog } from "./ProductDialog"
 
 
 type PropType = { product: Product }
@@ -26,9 +26,11 @@ const ProductCard = ({ product }: PropType) => {
                 </div>
             </CardContent>
             <CardFooter>
-                <div className="flex items-center justify-between gap-10">
+                <div className="flex items-center justify-between gap-10 w-full">
                     <span>from  <b className='ml-1'>₹{product.price}</b></span>
-                    <Button size={"sm"}>Choose</Button>
+                    <ProductDialog product={product}>
+                        <span className="p-2 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary text-white">Choose</span>
+                    </ProductDialog>
                 </div>
             </CardFooter>
         </Card>
