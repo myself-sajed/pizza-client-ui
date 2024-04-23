@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { Product } from "./MainProducts"
 import {
     Card,
     CardContent,
@@ -9,6 +8,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ProductDialog } from "./ProductDialog"
+import { Product } from "@/types"
 
 
 type PropType = { product: Product }
@@ -27,7 +27,7 @@ const ProductCard = ({ product }: PropType) => {
             </CardContent>
             <CardFooter>
                 <div className="flex items-center justify-between gap-10 w-full">
-                    <span>from  <b className='ml-1'>₹{product.price}</b></span>
+                    <span>from  <b className='ml-1'>₹{100}</b></span>
                     <ProductDialog product={product}>
                         <span className="p-2 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary text-white">Choose</span>
                     </ProductDialog>

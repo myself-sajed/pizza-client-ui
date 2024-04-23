@@ -5,7 +5,6 @@ import {
     DialogContent,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Product } from "./MainProducts";
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,7 @@ import ExtraToppings from "./ExtraToppings";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import { Product } from "@/types";
 
 export interface Topping {
     id: string;
@@ -27,6 +27,8 @@ type PropTypes = {
 }
 
 export function ProductDialog({ children, product }: PropTypes) {
+
+    console.log(product)
 
 
     const toppings: Topping[] = [
@@ -43,7 +45,7 @@ export function ProductDialog({ children, product }: PropTypes) {
         <DialogContent className="p-0 rounded max-w-3xl">
             <div className="flex items-start">
                 <div className="bg-white rounded-l-lg p-8 flex items-center justify-between h-full">
-                    <Image src={'/assets/pizza-main.png'} height={220} width={220} alt="pizza-images" />
+                    <Image src={product.image} height={220} width={220} alt="pizza-images" />
                 </div>
                 <div className="rounded-r-lg p-8 flex-1">
                     <div>
@@ -51,90 +53,40 @@ export function ProductDialog({ children, product }: PropTypes) {
                         <p className="text-sm">{product.description}</p>
                     </div>
 
+                    {
+                        Object.entries(product.priceConfiguration).map(([key, value]) => {
 
-                    <div className="mt-6">
-                        <p className="text-sm font-medium">Choose the size</p>
-                        <RadioGroup
-                            defaultValue="small"
-                            className="grid grid-cols-3 gap-4 mt-2">
-                            <div>
-                                <RadioGroupItem
-                                    value="small"
-                                    id="small"
-                                    className="peer sr-only "
-                                    aria-label="Small"
-                                />
-                                <Label
-                                    htmlFor="small"
-                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                    Small
-                                </Label>
-                            </div>
+                            const availableOptions = Object.entries(value.availableOptions)
 
-                            <div>
-                                <RadioGroupItem
-                                    value="medium"
-                                    id="medium"
-                                    className="peer sr-only "
-                                    aria-label="Medium"
-                                />
-                                <Label
-                                    htmlFor="medium"
-                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                    Medium
-                                </Label>
-                            </div>
+                            return <div key={key} className="mt-6">
+                                <p className="text-sm font-medium">Choose the {key}</p>
 
-                            <div>
-                                <RadioGroupItem
-                                    value="large"
-                                    id="large"
-                                    className="peer sr-only "
-                                    aria-label="Large"
-                                />
-                                <Label
-                                    htmlFor="large"
-                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                    Large
-                                </Label>
+                                <RadioGroup
+                                    defaultValue={availableOptions[0][0]}
+                                    className="grid grid-cols-3 gap-4 mt-2">
+                                    {
+                                        availableOptions.map(([optionKey, optionValue]) => {
+                                            return <div key={optionKey}>
+                                                <RadioGroupItem
+                                                    value={optionKey}
+                                                    id={optionKey}
+                                                    className="peer sr-only "
+                                                    aria-label={optionKey}
+                                                />
+                                                <Label
+                                                    htmlFor={optionKey}
+                                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                                                    {optionKey} <br />
+                                                    <span className="mt-2">{`₹${optionValue}`}</span>
+                                                </Label>
+                                            </div>
+                                        })
+                                    }
+                                </RadioGroup>
                             </div>
-                        </RadioGroup>
-                    </div>
-                    <div className="mt-6">
-                        <p className="text-sm font-medium">Choose the crust</p>
-                        <RadioGroup
-                            defaultValue="thin"
-                            className="grid grid-cols-3 gap-4 mt-2">
-                            <div>
-                                <RadioGroupItem
-                                    value="thin"
-                                    id="thin"
-                                    className="peer sr-only "
-                                    aria-label="thin"
-                                />
-                                <Label
-                                    htmlFor="thin"
-                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                    Thin
-                                </Label>
-                            </div>
+                        })
+                    }
 
-                            <div>
-                                <RadioGroupItem
-                                    value="thick"
-                                    id="thick"
-                                    className="peer sr-only "
-                                    aria-label="thick"
-                                />
-                                <Label
-                                    htmlFor="thick"
-                                    className="cursor-pointer flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                    Thick
-                                </Label>
-                            </div>
-
-                        </RadioGroup>
-                    </div>
                     <div className="mt-6">
                         <p className="text-sm font-medium">Choose the toppings</p>
                         <ExtraToppings toppings={toppings} selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />

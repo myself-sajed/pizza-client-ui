@@ -1,85 +1,55 @@
+import { Badge } from '@/components/ui/badge'
+import { getCategories, getProducts } from '../js'
 import ProductCard from './ProductCard'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Category, Product } from '@/types'
 
 
-const MainProducts = () => {
+const MainProducts = async () => {
+
+
+    const [categories, products] = await Promise.all([getCategories(), getProducts()])
 
     return (
-        <div className="container mt-5">
+        <div>
 
-            <Tabs defaultValue="account" className="w-[400px]">
+            <Tabs defaultValue={categories.data?.[0]._id}>
                 <TabsList>
-                    <TabsTrigger className='text-md' value="Pizza">Pizza</TabsTrigger>
-                    <TabsTrigger className='text-md' value="Beverages">Beverages</TabsTrigger>
+                    {
+                        categories.data?.map((category: Category) => {
+                            return <TabsTrigger key={category._id} className='text-md' value={category._id}>{category.name}</TabsTrigger>
+                        })
+                    }
+
                 </TabsList>
-            </Tabs>
 
-
-            <div className="my-5 w-full grid grid-cols-4 gap-5">
                 {
-                    products.map((product) => {
-                        return <ProductCard key={product._id} product={product} />
-                    })
+                    categories.status
+                        ? <>
+                            {
+                                categories.data?.map((category: Category) => {
+                                    return <TabsContent key={category._id} value={category._id}>
+                                        <div className='grid grid-cols-5 gap-5 w-full'>
+                                            {
+                                                products.data?.data.map((product: Product) => {
+                                                    return category._id === product.categoryId && <div key={product._id}>
+                                                        <ProductCard product={product} />
+                                                    </div>
+                                                })
+                                            }
+                                        </div>
+
+                                    </TabsContent>
+                                })
+                            }
+                        </>
+                        : <Badge variant="destructive">Error Occured</Badge>
                 }
-            </div>
+
+            </Tabs>
 
         </div>
     )
 }
 
 export default MainProducts
-
-
-const products: Product[] = [
-    {
-        _id: '1',
-        name: 'Paneer Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 100,
-        image: '/assets/pizza-main.png'
-    },
-    {
-        _id: '2',
-        name: 'Margherita Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 150,
-        image: '/assets/pizza-main.png'
-    },
-    {
-        _id: '3',
-        name: 'Margherita Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 110,
-        image: '/assets/pizza-main.png'
-    },
-    {
-        _id: '4',
-        name: 'Margherita Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 190,
-        image: '/assets/pizza-main.png'
-    },
-    {
-        _id: '5',
-        name: 'Margherita Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 210,
-        image: '/assets/pizza-main.png'
-    },
-    {
-        _id: '6',
-        name: 'Margherita Pizza',
-        description: 'This is the best pizza out there for your daily fukcing needs',
-        price: 130,
-        image: '/assets/pizza-main.png'
-    },
-]
-
-
-export interface Product {
-    _id: string
-    name: string,
-    price: number,
-    description: string,
-    image: string
-}
