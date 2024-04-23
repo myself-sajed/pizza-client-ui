@@ -24,6 +24,12 @@ const ExtraToppings = ({ selectedToppings, setSelectedToppings }: ToppingsPropTy
         },
     })
 
+    useEffect(() => {
+        if (toppings?.data) {
+            setSelectedToppings((prev) => [...prev, toppings?.data[0]])
+        }
+    }, [toppings])
+
     return (
         <div className="mt-2">
             {
