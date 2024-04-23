@@ -41,3 +41,10 @@ export interface Product {
   priceConfiguration: PriceConfiguration;
   attributes: Attributes[];
 }
+
+export interface Topping {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+}

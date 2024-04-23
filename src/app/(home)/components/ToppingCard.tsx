@@ -1,11 +1,11 @@
 'use client'
 
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import { Topping } from "./ProductDialog"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Topping } from "@/types";
 
 export type ToppingPropType = {
     topping: Topping;
@@ -15,11 +15,11 @@ export type ToppingPropType = {
 
 const ToppingCard = ({ topping, selectedToppings, setSelectedToppings }: ToppingPropType) => {
 
-    const selectedItem = selectedToppings.some((item) => item.id === topping.id)
+    const selectedItem = selectedToppings.some((item) => item._id === topping._id)
 
     const handleToppingsCheck = () => {
         if (selectedItem) {
-            setSelectedToppings((prev) => prev.filter((item) => item.id !== topping.id))
+            setSelectedToppings((prev) => prev.filter((item) => item._id !== topping._id))
         } else {
             setSelectedToppings((prev) => [...prev, topping])
         }

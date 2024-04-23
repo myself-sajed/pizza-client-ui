@@ -1,4 +1,5 @@
-import { apiURL } from "@/constants";
+import { apiURL, clientAPIURL } from "@/constants";
+import axios from "axios";
 
 export const getTenants = async () => {
   const link = `${apiURL}/auth/tenant/getAllTenantList`;
@@ -40,4 +41,9 @@ export const getProducts = async () => {
   const data = res.ok ? await res.json() : null;
 
   return { status: res.ok, data };
+};
+
+export const getToppings = async () => {
+  const link = `${clientAPIURL}/catalog/toppings/getToppings`;
+  return axios.get(link);
 };

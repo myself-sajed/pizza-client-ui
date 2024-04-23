@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import {
     Dialog,
@@ -8,18 +8,14 @@ import {
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import ExtraToppings from "./ExtraToppings";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
-import { Product } from "@/types";
+import { Product, Topping } from "@/types";
+import { clientAPIURL } from "@/constants";
+import axios from 'axios'
+import ExtraToppings from "./ExtraToppings";
 
-export interface Topping {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-}
 
 type PropTypes = {
     product: Product
@@ -28,16 +24,7 @@ type PropTypes = {
 
 export function ProductDialog({ children, product }: PropTypes) {
 
-    console.log(product)
-
-
-    const toppings: Topping[] = [
-        { id: '1', name: 'Chicken', image: '/assets/chicken.png', price: 10 },
-        { id: '2', name: 'Jelapeno', image: '/assets/jelapeno.png', price: 20 },
-        { id: '3', name: 'Cheese', image: '/assets/cheese.png', price: 30 },
-    ]
-
-    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([toppings[0]])
+    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
 
 
     return <Dialog>
@@ -89,7 +76,7 @@ export function ProductDialog({ children, product }: PropTypes) {
 
                     <div className="mt-6">
                         <p className="text-sm font-medium">Choose the toppings</p>
-                        <ExtraToppings toppings={toppings} selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
+                        <ExtraToppings selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
                     </div>
 
                     <div className="mt-12 flex items-center justify-between">
