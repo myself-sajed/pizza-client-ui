@@ -1,0 +1,2 @@
+Command to run the API GATEWAY:
+curl -Ls https://get.konghq.com/quickstart | bash -s -- -i kong -t latest
