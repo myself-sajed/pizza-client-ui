@@ -27,14 +27,14 @@ export function ProductDialog({ children, product }: PropTypes) {
     const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
 
 
-    return <Dialog>
+    return <Dialog >
         <DialogTrigger>{children}</DialogTrigger>
-        <DialogContent className="p-0 rounded max-w-3xl">
-            <div className="flex items-start">
-                <div className="bg-white rounded-l-lg p-8 flex items-center justify-between h-full">
+        <DialogContent className="p-0 rounded max-w-3xl flex flex-col items-start justify-start h-[95vh] gap-0">
+            <div className="flex items-start h-full">
+                <div className="bg-white rounded-l-lg p-8 flex items-center justify-between h-full overflow-hidden">
                     <Image src={product.image} height={220} width={220} alt="pizza-images" />
                 </div>
-                <div className="rounded-r-lg p-8 flex-1">
+                <div className="rounded-r-lg p-8 flex-1 max-h-[85vh] overflow-x-auto">
                     <div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <p className="text-sm">{product.description}</p>
@@ -79,14 +79,14 @@ export function ProductDialog({ children, product }: PropTypes) {
                         <ExtraToppings selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
                     </div>
 
-                    <div className="mt-12 flex items-center justify-between">
-                        <span className="font-bold">₹600</span>
-                        <Button>
-                            <ShoppingCart />
-                            <span className="ml-5">Add to Cart</span>
-                        </Button>
-                    </div>
                 </div>
+            </div>
+            <div className="flex items-center justify-end gap-10 bg-white py-2 container rounded-b-lg">
+                <span className="font-bold text-xl">₹600</span>
+                <Button>
+                    <ShoppingCart />
+                    <span className="ml-5">Add to Cart</span>
+                </Button>
             </div>
         </DialogContent>
     </Dialog>
