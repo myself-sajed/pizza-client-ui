@@ -8,12 +8,10 @@ import {
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product, Topping } from "@/types";
-import { clientAPIURL } from "@/constants";
-import axios from 'axios'
 import ExtraToppings from "./ExtraToppings";
 
 
