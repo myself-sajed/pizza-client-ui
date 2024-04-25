@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { getTenants } from "@/app/(home)/js"
 import { Tenant } from "@/types"
 import { Badge } from "../ui/badge"
+import NavCart from "./NavCart"
 
 const Nav = async () => {
     const tenants = await getTenants()
@@ -44,11 +45,7 @@ const Nav = async () => {
                             <Link href={"/"}>Orders</Link>
                         </li>
                         <li>
-                            <div className="cursor-pointer relative hover:text-primary">
-                                <ShoppingBasket />
-                                <span className="sr-only">Notifications</span>
-                                <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-primary border-2 border-white rounded-full -top-3 p-2 -end-2 dark:border-gray-900">4</div>
-                            </div>
+                            <NavCart />
                         </li>
                         <li className="flex gap-2 ml-5">
                             <Phone size={20} /> <span>91-91-91-9191</span>
@@ -64,3 +61,5 @@ const Nav = async () => {
 }
 
 export default Nav
+
+
