@@ -10,6 +10,7 @@ export interface CartItem {
   product: Product | null;
   productConfiguration: ProductConfiguration | null;
   toppings: Topping[] | [];
+  qty: number;
 }
 
 export interface CartState {
@@ -32,14 +33,27 @@ export const cartSlice: Slice = createSlice({
             product: action.payload.product,
             productConfiguration: action.payload.productConfiguration,
             toppings: action.payload.toppings,
+            qty: action.payload.qty,
           },
         ],
+      };
+    },
+
+    updateCart: (state, action) => {
+      return {
+        cartItems: action.payload,
+      };
+    },
+
+    clearCart: () => {
+      return {
+        cartItems: [],
       };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, updateCart, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
