@@ -8,11 +8,15 @@ import {
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product, Topping } from "@/types";
 import ExtraToppings from "./ExtraToppings";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { CartItem, ProductConfiguration, addToCart } from "@/lib/redux/slices/cartSlice";
+import { toast } from "sonner"
+
 
 
 type PropTypes = {
@@ -22,10 +26,59 @@ type PropTypes = {
 
 export function ProductDialog({ children, product }: PropTypes) {
 
-    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
+    const [selectedToppings, setSelectedToppings] = useState<Topping[] | []>([])
+    const [productDataCapture, setProductDataCapture] = useState<ProductConfiguration | null>(null)
+    const [open, setOpen] = useState(false)
+    const dispatch = useAppDispatch()
+
+    const handleProductConfiguration = (key: string, value: string) => {
+        console.log(key, value)
+        setProductDataCapture((prev) => {
+            return { ...prev, [key]: value }
+        })
+    }
 
 
-    return <Dialog >
+    const addProductToCart = () => {
+        // things to add to cart
+        // 1. toppings
+        // 2. product
+        // 3. product configuration
+        const productCartData: CartItem = {
+            product,
+            toppings: selectedToppings,
+            productConfiguration: productDataCapture
+        }
+        dispatch(addToCart(productCartData))
+        toast("Product added to Cart", {
+            description: product.name,
+            action: {
+                label: "Go to Cart",
+                actionButtonStyle: { backgroundColor: "orangered" },
+                onClick: () => alert('TODO: redirection is yet to implement'),
+            },
+        })
+        setOpen(false)
+    }
+
+
+    // default value product configuration on modal open
+    useEffect(() => {
+        if (product) {
+            Object.entries(product.priceConfiguration).map(([key, value]) => {
+                const availableOptions = Object.entries(value.availableOptions)
+                handleProductConfiguration(key, availableOptions[0][0])
+            })
+        }
+    }, [product])
+
+
+
+
+
+
+
+    return <Dialog onOpenChange={(e) => setOpen(e)} open={open} >
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="p-0 rounded max-w-3xl flex flex-col items-start justify-start h-[95vh] gap-0">
             <div className="flex items-start h-full">
@@ -48,6 +101,7 @@ export function ProductDialog({ children, product }: PropTypes) {
 
                                 <RadioGroup
                                     defaultValue={availableOptions[0][0]}
+                                    onValueChange={(data) => { handleProductConfiguration(key, data) }}
                                     className="grid grid-cols-3 gap-4 mt-2">
                                     {
                                         availableOptions.map(([optionKey, optionValue]) => {
@@ -81,7 +135,7 @@ export function ProductDialog({ children, product }: PropTypes) {
             </div>
             <div className="flex items-center justify-end gap-10 bg-white py-2 container rounded-b-lg">
                 <span className="font-bold text-xl">₹600</span>
-                <Button>
+                <Button onClick={addProductToCart}>
                     <ShoppingCart />
                     <span className="ml-5">Add to Cart</span>
                 </Button>
