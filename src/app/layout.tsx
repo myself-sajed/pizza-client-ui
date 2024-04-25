@@ -33,7 +33,7 @@ export default function RootLayout({
               <Nav />
               <main>
                 {children}
-                <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "orangered" } }} />
+                <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316", } }} />
               </main>
             </div>
           </body>
