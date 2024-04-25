@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Nav from "@/components/custom/Nav";
 import { ReactQueryClientProvider } from "@/components/custom/ReactQueryClientProvider";
 import StoreProvider from "./StoreProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
               <Nav />
               <main>
                 {children}
+                <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "orangered" } }} />
               </main>
             </div>
           </body>
