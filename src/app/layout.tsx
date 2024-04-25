@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Nav from "@/components/custom/Nav";
 import { ReactQueryClientProvider } from "@/components/custom/ReactQueryClientProvider";
+import StoreProvider from "./StoreProvider";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", });
 
@@ -21,18 +22,20 @@ export default function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="en">
-        <body className={cn(
-          "min-h-screen bg-background font-manrope antialiased",
-          manrope.variable
-        )}
-        >
-          <div>
-            <Nav />
-            <main>
-              {children}
-            </main>
-          </div>
-        </body>
+        <StoreProvider>
+          <body className={cn(
+            "min-h-screen bg-background font-manrope antialiased",
+            manrope.variable
+          )}
+          >
+            <div>
+              <Nav />
+              <main>
+                {children}
+              </main>
+            </div>
+          </body>
+        </StoreProvider>
       </html>
     </ReactQueryClientProvider>
   );
