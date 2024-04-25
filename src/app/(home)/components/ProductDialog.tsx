@@ -1,10 +1,6 @@
 "use client"
 
-import {
-    Dialog,
-    DialogContent,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -13,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product, Topping } from "@/types";
 import ExtraToppings from "./ExtraToppings";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { CartItem, ProductConfiguration, addToCart } from "@/lib/redux/slices/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { CartItem, ProductConfiguration, addToCart, updateCart } from "@/lib/redux/slices/cartSlice";
 import { toast } from "sonner"
+import { isProductAlreadyExistsInCart } from "../js/utility";
 
 
 
@@ -29,10 +26,10 @@ export function ProductDialog({ children, product }: PropTypes) {
     const [selectedToppings, setSelectedToppings] = useState<Topping[] | []>([])
     const [productDataCapture, setProductDataCapture] = useState<ProductConfiguration | null>(null)
     const [open, setOpen] = useState(false)
+    const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems)
     const dispatch = useAppDispatch()
 
     const handleProductConfiguration = (key: string, value: string) => {
-        console.log(key, value)
         setProductDataCapture((prev) => {
             return { ...prev, [key]: value }
         })
@@ -40,22 +37,35 @@ export function ProductDialog({ children, product }: PropTypes) {
 
 
     const addProductToCart = () => {
-        // things to add to cart
-        // 1. toppings
-        // 2. product
-        // 3. product configuration
+
         const productCartData: CartItem = {
             product,
             toppings: selectedToppings,
-            productConfiguration: productDataCapture
+            productConfiguration: productDataCapture,
+            qty: 1
         }
-        dispatch(addToCart(productCartData))
-        toast("Product added to Cart", {
-            description: product.name,
+
+
+        // check wheather item already present in the cart
+        const isExists = isProductAlreadyExistsInCart(productCartData, cartItems)
+
+        if (isExists) {
+
+            const updateCartItems = cartItems.map((item) => {
+                return item.product?._id === product._id ? { ...item, qty: item.qty + 1 } : item
+            })
+
+            dispatch(updateCart(updateCartItems))
+        } else {
+            dispatch(addToCart(productCartData))
+        }
+
+        toast(!isExists ? "Product added to Cart" : "Product quantity increased", {
+            description: `${!isExists ? "Added" : "Updated"} ${product.name}`,
             action: {
                 label: "Go to Cart",
                 actionButtonStyle: { backgroundColor: "orangered" },
-                onClick: () => alert('TODO: redirection is yet to implement'),
+                onClick: () => alert('TODO: redirection to cart page is yet to implement'),
             },
         })
         setOpen(false)
@@ -70,7 +80,7 @@ export function ProductDialog({ children, product }: PropTypes) {
                 handleProductConfiguration(key, availableOptions[0][0])
             })
         }
-    }, [product])
+    }, [product, open])
 
 
 
