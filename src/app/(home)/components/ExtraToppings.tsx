@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getToppings } from "../js";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 
 export type ToppingsPropType = {
@@ -17,10 +18,12 @@ export type ToppingsPropType = {
 
 const ExtraToppings = ({ selectedToppings, setSelectedToppings }: ToppingsPropType) => {
 
+    const tenantId = useAppSelector((state) => state.tenant.selectedTenant)
+
     const { data: toppings, isLoading, isError } = useQuery({
-        queryKey: ['toppings-list'],
+        queryKey: ['toppings-list', tenantId],
         queryFn: () => {
-            return getToppings()
+            return getToppings(tenantId)
         },
     })
 
@@ -32,12 +35,18 @@ const ExtraToppings = ({ selectedToppings, setSelectedToppings }: ToppingsPropTy
                         <ToppingSkelton />
                     </div>
                     : !isError
-                        ? <div className="grid grid-cols-3 gap-4">
-                            {
-                                toppings?.data.map((topping: Topping) => {
-                                    return <ToppingCard topping={topping} key={topping._id} selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
-                                })
-                            }
+                        ?
+                        <div>
+                            <p className="text-sm font-medium inline">Choose the toppings</p> <Badge>{toppings?.data?.length || 0}</Badge>
+                            {toppings?.data.length !== 0
+                                ? <div className="grid grid-cols-3 gap-4 mt-2">
+                                    {
+                                        toppings?.data.map((topping: Topping) => {
+                                            return <ToppingCard topping={topping} key={topping._id} selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
+                                        })
+                                    }
+                                </div>
+                                : <Badge variant="secondary">Toppings are not available for this restaurant</Badge>}
                         </div>
                         : <Badge variant="destructive">Error occured while fetching toppings</Badge>}
         </div>
