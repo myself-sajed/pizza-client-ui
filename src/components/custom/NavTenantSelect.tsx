@@ -26,9 +26,10 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
     return (
         <Select onValueChange={(tenant) => handleSelectTenant(tenant)} >
             <SelectTrigger className="w-[180px] focus:ring-0 focus:outline-none">
-                <SelectValue placeholder="Global" />
+                <SelectValue placeholder="Global (All)" />
             </SelectTrigger>
             <SelectContent>
+                <SelectItem value={"null"}>Global (All)</SelectItem>
                 {
                     tenants?.data.tenants?.map((tenant: Tenant) => {
                         return <SelectItem key={tenant.id} value={tenant.id}>{tenant.name}</SelectItem>
