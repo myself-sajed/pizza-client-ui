@@ -3,12 +3,13 @@ import { getCategories, getProducts } from '../js'
 import ProductCard from './ProductCard'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Category, Product } from '@/types'
+import { useAppSelector } from '@/lib/redux/hooks'
+import ShowProducts from './ShowProducts'
 
 
 const MainProducts = async () => {
 
-
-    const [categories, products] = await Promise.all([getCategories(), getProducts()])
+    const categories = await Promise.resolve(getCategories())
 
     return (
         <div>
@@ -29,16 +30,7 @@ const MainProducts = async () => {
                             {
                                 categories.data?.map((category: Category) => {
                                     return <TabsContent key={category._id} value={category._id}>
-                                        <div className='grid grid-cols-5 gap-5 w-full'>
-                                            {
-                                                products.data?.data.map((product: Product) => {
-                                                    return category._id === product.categoryId && <div key={product._id}>
-                                                        <ProductCard product={product} />
-                                                    </div>
-                                                })
-                                            }
-                                        </div>
-
+                                        <ShowProducts category={category} />
                                     </TabsContent>
                                 })
                             }
