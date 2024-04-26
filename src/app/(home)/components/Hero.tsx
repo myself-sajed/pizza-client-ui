@@ -21,7 +21,7 @@ const Hero = () => {
 
                     </div>
 
-                    <Image src="/assets/pizza-main.png" alt="Image Description" height={380} width={380} />
+                    <Image src="/assets/pizza-main.png" alt="Image Description" priority={false} height={380} width={380} />
                 </div>
             </div>
         </div>
