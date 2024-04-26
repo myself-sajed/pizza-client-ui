@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartSlice from "./slices/cartSlice";
+import selectedTenantSlice from "./slices/selectedTenantSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       cart: cartSlice,
+      tenant: selectedTenantSlice,
     },
   });
 };

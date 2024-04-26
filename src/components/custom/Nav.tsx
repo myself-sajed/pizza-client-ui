@@ -1,11 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import Link from "next/link"
-import { Phone, ShoppingBasket } from "lucide-react"
+import { Phone } from "lucide-react"
 import { Button } from "../ui/button"
 import { getTenants } from "@/app/(home)/js"
-import { Tenant } from "@/types"
 import { Badge } from "../ui/badge"
 import NavCart from "./NavCart"
+import NavTenantSelect from "./NavTenantSelect"
 
 const Nav = async () => {
     const tenants = await getTenants()
@@ -19,19 +18,7 @@ const Nav = async () => {
                         <circle cx="11" cy="11" r="7.5" stroke="#F65F42" strokeWidth="7" />
                     </svg>
                     {
-                        tenants?.status ? <Select>
-                            <SelectTrigger className="w-[180px] focus:ring-0 focus:outline-none">
-                                <SelectValue placeholder="Select Restaurant" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {
-                                    tenants?.data.tenants?.map((tenant: Tenant) => {
-                                        return <SelectItem key={tenant.id} value={tenant.id}>{tenant.name}</SelectItem>
-                                    })
-                                }
-
-                            </SelectContent>
-                        </Select> : <Badge variant="destructive">Error Occured</Badge>
+                        tenants?.status ? <NavTenantSelect tenants={tenants} /> : <Badge variant="destructive">Error Occured</Badge>
                     }
 
 

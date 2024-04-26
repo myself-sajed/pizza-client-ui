@@ -29,21 +29,12 @@ export const getCategories = async () => {
   return { status: res.ok, data };
 };
 
-export const getProducts = async () => {
-  const link = `${apiURL}/catalog/products/getProducts`;
-
-  const res = await fetch(link, {
-    next: {
-      revalidate: 3600,
-    },
-  });
-
-  const data = res.ok ? await res.json() : null;
-
-  return { status: res.ok, data };
+export const getProducts = async (tenantId: string) => {
+  const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}`;
+  return axios.get(link);
 };
 
-export const getToppings = async () => {
-  const link = `${clientAPIURL}/catalog/toppings/getToppings`;
+export const getToppings = async (tenantId: string) => {
+  const link = `${clientAPIURL}/catalog/toppings/getToppings?tenantId=${tenantId}`;
   return axios.get(link);
 };
