@@ -137,7 +137,6 @@ export function ProductDialog({ children, product }: PropTypes) {
                     }
 
                     <div className="mt-6">
-                        <p className="text-sm font-medium">Choose the toppings</p>
                         <ExtraToppings selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
                     </div>
 
