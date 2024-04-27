@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 
 const ShowProducts = ({ category }: { category: Category }) => {
 
-    const tenantId = (useAppSelector((state) => state.tenant.selectedTenant))?.id
+    const tenantId = useAppSelector((state) => state.tenant.selectedTenant)
 
     const { data: products, isError } = useQuery({
         queryKey: ['products-list', tenantId],

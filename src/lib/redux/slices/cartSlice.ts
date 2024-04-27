@@ -26,32 +26,26 @@ export const cartSlice: Slice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const newItem = {
-        product: action.payload.product,
-        productConfiguration: action.payload.productConfiguration,
-        toppings: action.payload.toppings,
-        qty: action.payload.qty,
-      };
-
-      window.localStorage.setItem(
-        "cartItems",
-        JSON.stringify([...state.cartItems, newItem])
-      );
-
       return {
-        cartItems: [...state.cartItems, newItem],
+        cartItems: [
+          ...state.cartItems,
+          {
+            product: action.payload.product,
+            productConfiguration: action.payload.productConfiguration,
+            toppings: action.payload.toppings,
+            qty: action.payload.qty,
+          },
+        ],
       };
     },
 
     updateCart: (state, action) => {
-      window.localStorage.setItem("cartItems", JSON.stringify(action.payload));
       return {
         cartItems: action.payload,
       };
     },
 
     clearCart: () => {
-      window.localStorage.setItem("cartItems", JSON.stringify([]));
       return {
         cartItems: [],
       };
