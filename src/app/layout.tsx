@@ -6,6 +6,7 @@ import Nav from "@/components/custom/Nav";
 import { ReactQueryClientProvider } from "@/components/custom/ReactQueryClientProvider";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/custom/Footer";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
               </main>
             </div>
           </body>
+          <Footer />
         </StoreProvider>
       </html>
     </ReactQueryClientProvider>
