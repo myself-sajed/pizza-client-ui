@@ -1,8 +1,9 @@
+import { Tenant } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { Slice } from "@reduxjs/toolkit";
 
 export interface SelectedTenant {
-  selectedTenant: string | null;
+  selectedTenant: Tenant | null;
 }
 
 const initialState: SelectedTenant = {
@@ -14,6 +15,10 @@ export const selectedTenantSlice: Slice = createSlice({
   initialState,
   reducers: {
     selectTenant: (state, action) => {
+      window.localStorage.setItem(
+        "selectedTenant",
+        JSON.stringify(action.payload)
+      );
       state.selectedTenant = action.payload;
     },
   },

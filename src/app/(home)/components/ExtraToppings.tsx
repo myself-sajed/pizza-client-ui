@@ -18,7 +18,7 @@ export type ToppingsPropType = {
 
 const ExtraToppings = ({ selectedToppings, setSelectedToppings }: ToppingsPropType) => {
 
-    const tenantId = useAppSelector((state) => state.tenant.selectedTenant)
+    const tenantId = (useAppSelector((state) => state.tenant.selectedTenant))?.id
 
     const { data: toppings, isLoading, isError } = useQuery({
         queryKey: ['toppings-list', tenantId],
