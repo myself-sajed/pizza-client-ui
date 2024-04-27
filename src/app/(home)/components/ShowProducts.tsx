@@ -20,7 +20,7 @@ const ShowProducts = ({ category }: { category: Category }) => {
 
 
     return (
-        !isError ? products?.data?.data?.length !== 0 ? <div className='grid grid-cols-5 gap-5 w-full'>
+        !isError ? products?.data?.data?.length !== 0 ? <div className='sm:grid lg:grid-cols-4 md:grid-cols-3 gap-5 w-full space-y-5 sm:space-y-0'>
             {
                 products?.data?.data.map((product: Product) => {
                     return category._id === product.categoryId && <div key={product._id}>
