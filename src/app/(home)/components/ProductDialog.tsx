@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product, Topping } from "@/types";
@@ -21,7 +21,7 @@ type PropTypes = {
     children: React.ReactNode;
 }
 
-export function ProductDialog({ children, product }: PropTypes) {
+function ProductDialog({ children, product }: PropTypes) {
 
     const [selectedToppings, setSelectedToppings] = useState<Topping[] | []>([])
     const [productDataCapture, setProductDataCapture] = useState<ProductConfiguration | null>(null)
@@ -69,6 +69,7 @@ export function ProductDialog({ children, product }: PropTypes) {
             },
         })
         setOpen(false)
+        setSelectedToppings([])
     }
 
 
@@ -81,6 +82,31 @@ export function ProductDialog({ children, product }: PropTypes) {
             })
         }
     }, [product, open])
+
+    // producing total price of the chosen product
+
+    const totalPrice = useMemo(() => {
+
+
+        if (productDataCapture && product) {
+
+            console.log('rendered')
+
+
+            // 1. calculate main pricing
+            const productConfPrice = Object.entries(productDataCapture).reduce((acc, [key, value]) => {
+                return acc + (product.priceConfiguration[key].availableOptions[value] || 0)
+            }, 0)
+
+            // 2. calculate topping cost
+            const toppingPrice = selectedToppings.reduce((acc, curr) => {
+                return acc + curr.price
+            }, 0)
+
+            return productConfPrice + toppingPrice
+        }
+
+    }, [product, productDataCapture, selectedToppings])
 
 
 
@@ -143,7 +169,7 @@ export function ProductDialog({ children, product }: PropTypes) {
                 </div>
             </div>
             <div className="flex items-center justify-end gap-10 bg-white py-2 container rounded-b-lg">
-                <span className="font-bold text-xl">₹600</span>
+                <span className="font-bold text-xl">₹{totalPrice}</span>
                 <Button onClick={addProductToCart}>
                     <ShoppingCart />
                     <span className="ml-5">Add to Cart</span>
@@ -153,4 +179,7 @@ export function ProductDialog({ children, product }: PropTypes) {
     </Dialog>
 
 }
+
+
+export default ProductDialog
 

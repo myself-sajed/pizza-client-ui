@@ -7,8 +7,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ProductDialog } from "./ProductDialog"
 import { Product } from "@/types"
+import ProductDialog from "./ProductDialog"
 
 
 type PropType = { product: Product }

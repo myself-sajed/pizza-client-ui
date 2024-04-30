@@ -14,10 +14,14 @@ export interface Attributes {
   availableOptions: string[];
 }
 
+export interface AvailableOptions {
+  [key: string]: number;
+}
+
 export interface PriceConfiguration {
   [key: string]: {
     priceType: priceType;
-    availableOptions: string[];
+    availableOptions: AvailableOptions;
   };
 }
 
