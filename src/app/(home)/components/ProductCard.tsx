@@ -7,13 +7,13 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Product } from "@/types"
+import { Category, Product } from "@/types"
 import ProductDialog from "./ProductDialog"
 
 
-type PropType = { product: Product }
+type PropType = { product: Product, category: Category }
 
-const ProductCard = ({ product }: PropType) => {
+const ProductCard = ({ product, category }: PropType) => {
     return (
         <Card className="rounded-lg border-none">
             <CardHeader>
@@ -28,7 +28,7 @@ const ProductCard = ({ product }: PropType) => {
             <CardFooter>
                 <div className="flex items-center justify-between gap-10 w-full">
                     <span>from  <b className='ml-1'>₹{100}</b></span>
-                    <ProductDialog product={product}>
+                    <ProductDialog product={product} category={category}>
                         <span className="p-2 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary text-white">Choose</span>
                     </ProductDialog>
                 </div>

@@ -1,9 +1,7 @@
 import { Badge } from '@/components/ui/badge'
-import { getCategories, getProducts } from '../js'
-import ProductCard from './ProductCard'
+import { getCategories } from '../js'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Category, Product } from '@/types'
-import { useAppSelector } from '@/lib/redux/hooks'
+import { Category } from '@/types'
 import ShowProducts from './ShowProducts'
 
 

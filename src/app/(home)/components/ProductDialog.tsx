@@ -7,21 +7,23 @@ import { Label } from "@/components/ui/label";
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
-import { Product, Topping } from "@/types";
+import { Category, Product, Topping } from "@/types";
 import ExtraToppings from "./ExtraToppings";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { CartItem, ProductConfiguration, addToCart, updateCart } from "@/lib/redux/slices/cartSlice";
 import { toast } from "sonner"
 import { isProductAlreadyExistsInCart } from "../js/utility";
+import { Badge } from "@/components/ui/badge";
 
 
 
 type PropTypes = {
     product: Product
+    category: Category
     children: React.ReactNode;
 }
 
-function ProductDialog({ children, product }: PropTypes) {
+function ProductDialog({ children, product, category }: PropTypes) {
 
     const [selectedToppings, setSelectedToppings] = useState<Topping[] | []>([])
     const [productDataCapture, setProductDataCapture] = useState<ProductConfiguration | null>(null)
@@ -90,9 +92,6 @@ function ProductDialog({ children, product }: PropTypes) {
 
         if (productDataCapture && product) {
 
-            console.log('rendered')
-
-
             // 1. calculate main pricing
             const productConfPrice = Object.entries(productDataCapture).reduce((acc, [key, value]) => {
                 return acc + (product.priceConfiguration[key].availableOptions[value] || 0)
@@ -109,19 +108,14 @@ function ProductDialog({ children, product }: PropTypes) {
     }, [product, productDataCapture, selectedToppings])
 
 
-
-
-
-
-
     return <Dialog onOpenChange={(e) => setOpen(e)} open={open} >
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="p-0 rounded max-w-3xl flex flex-col items-start justify-start h-[95vh] gap-0">
-            <div className="flex items-start h-full">
+            <div className="flex items-start h-full w-full">
                 <div className="bg-white rounded-l-lg p-8 flex items-center justify-between h-full overflow-hidden">
                     <Image src={product.image} height={220} width={220} alt="pizza-images" />
                 </div>
-                <div className="rounded-r-lg p-8 flex-1 max-h-[85vh] overflow-x-auto">
+                <div className="rounded-r-lg p-8 flex-1 max-h-[85vh] overflow-x-auto w-full">
                     <div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <p className="text-sm">{product.description}</p>
@@ -162,9 +156,14 @@ function ProductDialog({ children, product }: PropTypes) {
                         })
                     }
 
-                    <div className="mt-6">
-                        <ExtraToppings selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
-                    </div>
+
+                    {category.hasToppings ?
+                        <div className="mt-6">
+                            <ExtraToppings selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
+                        </div>
+                        :
+                        <Badge variant="secondary" className="mt-10">Toppings are not available for this product</Badge>
+                    }
 
                 </div>
             </div>

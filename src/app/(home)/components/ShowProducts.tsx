@@ -35,7 +35,7 @@ const ShowProducts = ({ category }: { category: Category }) => {
                 filteredProducts.length > 0
                     ? filteredProducts.map((product: Product) => {
                         return <div key={product._id}>
-                            <ProductCard product={product} />
+                            <ProductCard category={category} product={product} />
                         </div>
                     })
                     : <Badge variant="secondary">No {category.name} available at the moment. </Badge>
