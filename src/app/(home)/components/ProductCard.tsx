@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Category, Product } from "@/types"
 import ProductDialog from "./ProductDialog"
+import { showMinimumPrice } from "@/lib/utils"
 
 
 type PropType = { product: Product, category: Category }
@@ -27,7 +28,7 @@ const ProductCard = ({ product, category }: PropType) => {
             </CardContent>
             <CardFooter>
                 <div className="flex items-center justify-between gap-10 w-full">
-                    <span>from  <b className='ml-1'>₹{100}</b></span>
+                    <span>from  <b className='ml-1'>₹{showMinimumPrice(product)}</b></span>
                     <ProductDialog product={product} category={category}>
                         <span className="p-2 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary text-white">Choose</span>
                     </ProductDialog>
