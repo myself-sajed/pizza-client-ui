@@ -29,7 +29,7 @@ export const getCategories = async () => {
   return { status: res.ok, data };
 };
 
-export const getProducts = async (tenantId: string) => {
+export const getProducts = async (tenantId: string | null) => {
   const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}`;
   return axios.get(link);
 };

@@ -11,7 +11,7 @@ import { useEffect, useState } from "react"
 
 const ShowProducts = ({ category }: { category: Category }) => {
 
-    const tenantId = (useAppSelector((state) => state.tenant.selectedTenant))?.id
+    const tenantId: string | null = (useAppSelector((state) => state.tenant.selectedTenant))?.id
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
     const { data: products, isError } = useQuery({
