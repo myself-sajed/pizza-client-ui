@@ -8,7 +8,7 @@ const Hero = () => {
             <div className="py-10 container">
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="block text-3xl font-extrabold text-gray-800 sm:text-4xl lg:text-7xl lg:leading-tight tracking-tighter	">Supremely delicous pizza in <br /> <span className="text-primary">Only 45 minutes!</span></p>
+                        <p className="block text-3xl font-extrabold text-gray-800 sm:text-4xl lg:text-7xl lg:leading-tight tracking-tighter	">Heavenly delicous pizza in <br /> <span className="text-primary">Just 40 minutes!</span></p>
                         <p className="text-lg text-gray-800 ">Enjoy a free meal if order takes more than 45 minutes.</p>
 
                         <div className="mt-10 grid gap-3 w-full sm:inline-flex">
