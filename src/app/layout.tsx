@@ -23,24 +23,24 @@ export default function RootLayout({
 }>) {
   return (
     <ReactQueryClientProvider>
-      <html lang="en">
-        <StoreProvider>
+      <StoreProvider>
+        <html lang="en">
           <body className={cn(
-            "min-h-screen bg-background font-manrope antialiased",
+            "bg-background font-manrope antialiased",
             manrope.variable
           )}
           >
-            <div>
+            <div className="min-h-screen">
               <Nav />
               <main>
                 {children}
                 <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316" }, duration: 2300 }} />
               </main>
             </div>
+            <Footer />
           </body>
-          <Footer />
-        </StoreProvider>
-      </html>
+        </html>
+      </StoreProvider>
     </ReactQueryClientProvider>
   );
 }
