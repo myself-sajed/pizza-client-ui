@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ArrowUp10, ShoppingCart, Trash } from "lucide-react";
 import { Category, Product, Topping } from "@/types";
 import ExtraToppings from "./ExtraToppings";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
@@ -14,6 +14,7 @@ import { CartItem, ProductConfiguration, addToCart, updateCart } from "@/lib/red
 import { toast } from "sonner"
 import { isProductAlreadyExistsInCart } from "../js/utility";
 import { Badge } from "@/components/ui/badge";
+import Crypto from 'crypto-js'
 
 
 
@@ -37,7 +38,42 @@ function ProductDialog({ children, product, category }: PropTypes) {
         })
     }
 
+    const isProductAlreadyExists = useMemo(() => {
+        if (productDataCapture && product) {
 
+            const productCartData: CartItem = {
+                product,
+                toppings: selectedToppings,
+                productConfiguration: productDataCapture,
+                qty: 1
+            }
+
+            // check wheather item already present in the cart
+            const isExists = isProductAlreadyExistsInCart(productCartData, cartItems)
+
+            return isExists
+        }
+    }, [product, selectedToppings, productDataCapture, cartItems])
+
+    // remove product from cart which has current product configuration
+    const removeProductFromCart = () => {
+        const updateCartItems = cartItems.filter(({ qty, ...productFromCart }) => {
+
+            const productCartData = {
+                product,
+                productConfiguration: productDataCapture,
+                toppings: selectedToppings,
+            }
+
+            const productFromCartHash = Crypto.SHA256(JSON.stringify(productFromCart)).toString();
+            const productCartDataHash = Crypto.SHA256(JSON.stringify(productCartData)).toString();
+
+            return productFromCartHash !== productCartDataHash
+        })
+        dispatch(updateCart(updateCartItems))
+    }
+
+    // add product to cart
     const addProductToCart = () => {
 
         const productCartData: CartItem = {
@@ -48,10 +84,7 @@ function ProductDialog({ children, product, category }: PropTypes) {
         }
 
 
-        // check wheather item already present in the cart
-        const isExists = isProductAlreadyExistsInCart(productCartData, cartItems)
-
-        if (isExists) {
+        if (isProductAlreadyExists) {
 
             const updateCartItems = cartItems.map((item) => {
                 return item.product?._id === product._id ? { ...item, qty: item.qty + 1 } : item
@@ -62,8 +95,8 @@ function ProductDialog({ children, product, category }: PropTypes) {
             dispatch(addToCart(productCartData))
         }
 
-        toast(!isExists ? "Product added to Cart" : "Product quantity increased", {
-            description: `${!isExists ? "Added" : "Updated"} ${product.name}`,
+        toast(!isProductAlreadyExists ? "Product added to Cart" : "Product quantity increased", {
+            description: `${!isProductAlreadyExists ? "Added" : "Updated"} ${product.name}`,
             action: {
                 label: "Go to Cart",
                 actionButtonStyle: { backgroundColor: "orangered" },
@@ -86,7 +119,6 @@ function ProductDialog({ children, product, category }: PropTypes) {
     }, [product, open])
 
     // producing total price of the chosen product
-
     const totalPrice = useMemo(() => {
 
 
@@ -169,10 +201,26 @@ function ProductDialog({ children, product, category }: PropTypes) {
             </div>
             <div className="flex items-center justify-end gap-10 bg-white py-2 container rounded-b-lg">
                 <span className="font-bold text-xl">₹{totalPrice}</span>
-                <Button onClick={addProductToCart}>
-                    <ShoppingCart />
-                    <span className="ml-5">Add to Cart</span>
-                </Button>
+                {
+                    !isProductAlreadyExists
+                        ? <Button onClick={addProductToCart}>
+                            <ShoppingCart size={22} />
+                            <span className="ml-3">Add to Cart</span>
+                        </Button>
+                        :
+                        <div className="flex items-center gap-2">
+                            <Button variant="secondary" onClick={() => removeProductFromCart()}>
+                                <Trash size={22} />
+                                <span className="ml-3">Remove</span>
+                            </Button>
+                            <Button onClick={addProductToCart}>
+                                <ArrowUp10 size={22} />
+                                <span className="ml-3">Add again</span>
+                            </Button>
+                        </div>
+
+                }
+
             </div>
         </DialogContent>
     </Dialog>
