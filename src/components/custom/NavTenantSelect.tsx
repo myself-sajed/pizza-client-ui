@@ -29,7 +29,7 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
         }
     }
     return (
-        <div className="flex items-center justify-start gap-1">
+        <div className="flex items-center justify-start gap-1 animate-once animate-fade-up animate-delay-1000 animate-duration-[2000]">
             <span className="text-sm">&#128994;</span>
             <Select defaultValue={selectedTenant?.id || "null"} onValueChange={(tenant) => handleSelectTenant(tenant)} >
                 <SelectTrigger className="md:w-[180px] w-[120px] focus:ring-0 focus:ring-transparent focus:outline-none border-none bg-transparent focus:border-none">

@@ -30,7 +30,7 @@ const ShowProducts = ({ category }: { category: Category }) => {
 
 
     return (
-        !isError ? products?.data?.data?.length !== 0 ? <div className='sm:grid lg:grid-cols-4 md:grid-cols-3 gap-5 w-full space-y-5 sm:space-y-0'>
+        !isError ? products?.data?.data?.length !== 0 ? <div className='sm:grid lg:grid-cols-4 md:grid-cols-3 gap-5 w-full space-y-5 sm:space-y-0 animate-once animate-fade-up animate-duration-[2200] delay-300'>
             {
                 filteredProducts.length > 0
                     ? filteredProducts.map((product: Product) => {

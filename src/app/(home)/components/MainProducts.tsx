@@ -10,7 +10,7 @@ const MainProducts = async () => {
     const categories = await Promise.resolve(getCategories())
 
     return (
-        <div id="menu">
+        <div id="menu" className='animate-once animate-fade-up animate-duration-[2200]'>
 
             <Tabs defaultValue={categories.data?.[0]._id}>
                 <TabsList>

@@ -68,21 +68,22 @@ const CartItem = ({ cartItem, cartItems }: { cartItem: ICartItem, cartItems: ICa
 
 
     return (
-        <div className="w-full grid grid-cols-8 items-center border-b-2 border-secondary py-6">
-            <div className='flex items-center gap-7 col-span-4'>
+        <div className="w-full grid md:grid-cols-9 grid-cols-5  items-center border-b-2 border-secondary py-6">
+            <div className='flex items-center gap-7 md:col-span-4 col-span-5'>
                 <Image src={cartItem.image} height={90} width={90} alt="Pizza" />
 
                 <div>
                     <p className='font-medium'>{cartItem.name}</p>
-                    <p className='text-gray-500 text-sm'>{cartItem?.productConfiguration ? Object.values(cartItem?.productConfiguration).join(', ') : null}</p>
-                    <p className='text-gray-500 text-sm'>{cartItem.toppings.map((topping) => topping.name).join(', ')}</p>
+                    <p className='text-gray-500 sm:text-sm text-xs'>{cartItem?.productConfiguration ? Object.values(cartItem?.productConfiguration).join(', ') : null}</p>
+                    <p className='text-gray-500 sm:text-sm text-xs'>{cartItem.toppings.map((topping) => topping.name).join(', ')}</p>
                 </div>
             </div>
-            <div className="col-span-2">
-                <div className="bg-gray-200 inline-flex rounded-full items-center gap-2 font-semibold">
+            <span className='md:block hidden'></span>
+            <div className="md:col-span-2 md:mt-0 mt-5">
+                <div className="bg-gray-100 inline-flex rounded-full items-center gap-2 font-semibold">
                     <TooltipProvider>
                         <Tooltip delayDuration={200}>
-                            <TooltipTrigger onClick={decrementProductCount} ><button className='py-2 px-5 hover:bg-gray-100 rounded-full'>-</button></TooltipTrigger>
+                            <TooltipTrigger onClick={decrementProductCount} ><button className='py-2 px-5 hover:bg-[#fafafa] rounded-full'>-</button></TooltipTrigger>
                             <TooltipContent>
                                 Decrease quantity
                             </TooltipContent>
@@ -91,7 +92,7 @@ const CartItem = ({ cartItem, cartItems }: { cartItem: ICartItem, cartItems: ICa
                     <span>{cartItem.qty}</span>
                     <TooltipProvider>
                         <Tooltip delayDuration={200}>
-                            <TooltipTrigger onClick={incrementProductCount}><button className='py-2 px-5 hover:bg-gray-100 rounded-full'>+</button></TooltipTrigger>
+                            <TooltipTrigger onClick={incrementProductCount}><button className='py-2 px-5 hover:bg-[#fafafa] rounded-full'>+</button></TooltipTrigger>
                             <TooltipContent>
                                 Increase quantity
                             </TooltipContent>
@@ -100,11 +101,11 @@ const CartItem = ({ cartItem, cartItems }: { cartItem: ICartItem, cartItems: ICa
 
                 </div>
             </div>
-            <span className='font-bold'>₹{cartItem.totalPrice}</span>
+            <p className='font-bold md:mt-0 mt-5 md:ml-0 sm:ml-[80px] ml-[92px]'>₹{cartItem.totalPrice}</p>
             <TooltipProvider>
                 <Tooltip delayDuration={200}>
                     <TooltipTrigger onClick={() => removeProductFromCart()} >
-                        <Trash className='rounded hover:bg-gray-100 p-2 inline' size={35} />
+                        <Trash className='rounded hover:bg-gray-100 p-2 inline md:mt-0 mt-5 md:ml-0 ml-[120px]' size={35} />
                     </TooltipTrigger>
                     <TooltipContent>
                         <span className='font-semibold'>Remove from cart</span>
