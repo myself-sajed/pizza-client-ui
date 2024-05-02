@@ -32,7 +32,7 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
         <div className="flex items-center justify-start gap-1">
             <span className="text-sm">&#128994;</span>
             <Select defaultValue={selectedTenant?.id || "null"} onValueChange={(tenant) => handleSelectTenant(tenant)} >
-                <SelectTrigger className="w-[180px] focus:ring-0 focus:ring-transparent focus:outline-none border-none bg-transparent focus:border-none">
+                <SelectTrigger className="md:w-[180px] w-[120px] focus:ring-0 focus:ring-transparent focus:outline-none border-none bg-transparent focus:border-none">
                     <SelectValue placeholder={selectedTenant ? selectedTenant?.name : "Global (All)"} />
                 </SelectTrigger>
                 <SelectContent>

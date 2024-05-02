@@ -7,14 +7,17 @@ const Hero = () => {
         <div className="hero_section">
             <div className="py-10 container">
                 <div className="flex items-center justify-between">
-                    <div>
-                        <p className="block text-3xl font-extrabold text-gray-800 sm:text-4xl lg:text-7xl lg:leading-tight tracking-tighter	"><span>Heavenly</span> delicous pizza in <br /> <span className="text-primary">Just 40 minutes!</span></p>
-                        <p className="text-lg text-gray-800 ">Enjoy a free meal if order takes more than 45 minutes.</p>
+
+                    <div className='md:text-left text-center w-full md:block flex flex-col items-center justify-center'>
+                        <Image src="/assets/pizza-main.png" className='block md:hidden mb-4' alt="Image Description" priority={false} height={120} width={120} />
+                        <p className="block text-2xl sm:text-3xl font-extrabold text-gray-800 md:text-4xl lg:text-7xl xl:text-6xl 2xl:text-7xl lg:leading-tight tracking-tighter	"><span>Heavenly</span> delicious pizza in <br className='md:block hidden' /> <span className="text-primary">Just 40 minutes!</span></p>
+                        <p className="md:text-lg sm:text-base text-sm text-gray-800 md:mb-10">Enjoy a free meal if order takes more than 45 minutes.</p>
 
                         <OrderNowButton />
                     </div>
 
-                    <Image src="/assets/pizza-main.png" alt="Image Description" priority={false} height={380} width={380} />
+                    <Image src="/assets/pizza-main.png" className='lg:block hidden' alt="Image Description" priority={false} height={380} width={380} />
+                    <Image src="/assets/pizza-main.png" className='hidden md:block lg:hidden' alt="Image Description" priority={false} height={200} width={200} />
                 </div>
             </div>
         </div>

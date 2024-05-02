@@ -11,7 +11,7 @@ const OrderNowButton = () => {
     const cartItems = useAppSelector((state) => state.cart.cartItems)
 
     return (
-        <Link href={cartItems.length > 0 ? "/cart#checkout" : "#menu"} className="mt-10 grid gap-3 w-full sm:inline-flex">
+        <Link href={cartItems.length > 0 ? "/cart#checkout" : "#menu"} className="mt-10">
             <GoButton title="Order Now" />
         </Link>
     )
