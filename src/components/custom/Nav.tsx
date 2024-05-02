@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Phone } from "lucide-react"
+import { Menu, Phone } from "lucide-react"
 import { Button } from "../ui/button"
 import { getTenants } from "@/app/(home)/js"
 import { Badge } from "../ui/badge"
@@ -10,7 +10,7 @@ const Nav = async () => {
     const tenants = await getTenants()
 
     return (
-        <header className="bg-white">
+        <header className="hero_section">
             <nav className="flex items-center justify-between text-sm container py-3">
                 <div className="left flex items-center gap-3">
                     <Link href="/">
@@ -25,7 +25,7 @@ const Nav = async () => {
 
 
                 </div>
-                <div className="right">
+                <div className="right md:block hidden">
                     <ul className="flex items-center gap-4 font-semibold">
                         <li className="hover:text-primary">
                             <Link href={"/#menu"}>Menu</Link>
@@ -43,6 +43,9 @@ const Nav = async () => {
                             <Button size={"sm"} >Logout</Button>
                         </li>
                     </ul>
+                </div>
+                <div className="block md:hidden cursor-pointer">
+                    <Menu className="text-primary" />
                 </div>
             </nav>
         </header>
