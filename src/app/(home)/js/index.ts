@@ -30,7 +30,7 @@ export const getCategories = async () => {
 };
 
 export const getProducts = async (tenantId: string | null) => {
-  const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}`;
+  const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}&limit=100`;
   return axios.get(link);
 };
 
