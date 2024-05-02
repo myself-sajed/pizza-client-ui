@@ -4,7 +4,7 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: "pizza-catalog-service.s3.ap-south-1.amazonaws.com",
+                hostname: "pizza-catalog-services.s3.ap-south-1.amazonaws.com",
             }
         ],
     }
