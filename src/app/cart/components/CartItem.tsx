@@ -1,6 +1,5 @@
 import { Trash } from 'lucide-react'
 import Image from 'next/image'
-import pizza from '/public/assets/spirte.png'
 import {
     Tooltip,
     TooltipContent,
@@ -69,9 +68,9 @@ const CartItem = ({ cartItem, cartItems }: { cartItem: ICartItem, cartItems: ICa
 
 
     return (
-        <div className="w-full grid grid-cols-8 items-center border-b-2 border-secondary py-3">
+        <div className="w-full grid grid-cols-8 items-center border-b-2 border-secondary py-6">
             <div className='flex items-center gap-7 col-span-4'>
-                <Image src={pizza} height={90} width={90} alt="Pizza" />
+                <Image src={cartItem.image} height={90} width={90} alt="Pizza" />
 
                 <div>
                     <p className='font-medium'>{cartItem.name}</p>
