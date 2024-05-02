@@ -12,7 +12,7 @@ const MainProducts = async () => {
     return (
         <div>
 
-            <Tabs defaultValue={categories.data?.[0]._id}>
+            <Tabs id="menu" defaultValue={categories.data?.[0]._id}>
                 <TabsList>
                     {
                         categories.data?.map((category: Category) => {
