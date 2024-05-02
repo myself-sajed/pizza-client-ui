@@ -47,7 +47,7 @@ const CartPage = () => {
                                         return <CartItem key={`${item._id}-${index}`} cartItem={item} cartItems={cartItems} />
                                     })}
 
-                                    <div className="p-4 flex items-center justify-between">
+                                    <div className="p-4 flex items-center justify-between" id="checkout">
                                         <span className='font-bold text-lg'>₹{totalPrice || 0}</span>
                                         <Button className='flex items-center gap-2'><span>Checkout</span> <ArrowRight size={20} /> </Button>
                                     </div>
