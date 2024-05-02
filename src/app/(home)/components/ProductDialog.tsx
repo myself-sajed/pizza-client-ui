@@ -12,9 +12,9 @@ import ExtraToppings from "./ExtraToppings";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { CartItem, ProductConfiguration, addToCart, updateCart } from "@/lib/redux/slices/cartSlice";
 import { toast } from "sonner"
-import { isProductAlreadyExistsInCart } from "../js/utility";
 import { Badge } from "@/components/ui/badge";
-import Crypto from 'crypto-js'
+import { useRouter } from "next/navigation";
+import { checkIfItemExistsInCart } from "../js/utility";
 
 
 
@@ -31,6 +31,7 @@ function ProductDialog({ children, product, category }: PropTypes) {
     const [open, setOpen] = useState(false)
     const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems)
     const dispatch = useAppDispatch()
+    const router = useRouter()
 
     const handleProductConfiguration = (key: string, value: string) => {
         setProductDataCapture((prev) => {
@@ -38,56 +39,83 @@ function ProductDialog({ children, product, category }: PropTypes) {
         })
     }
 
-    const isProductAlreadyExists = useMemo(() => {
+    // producing total price of the chosen product
+    const totalPrice: number = useMemo(() => {
         if (productDataCapture && product) {
 
-            const productCartData: CartItem = {
-                product,
-                toppings: selectedToppings,
-                productConfiguration: productDataCapture,
-                qty: 1
-            }
+            // 1. calculate main pricing
+            const productConfPrice = Object.entries(productDataCapture).reduce((acc, [key, value]) => {
+                return acc + (product.priceConfiguration[key].availableOptions[value] || 0)
+            }, 0)
 
-            // check wheather item already present in the cart
-            const isExists = isProductAlreadyExistsInCart(productCartData, cartItems)
+            // 2. calculate topping cost
+            const toppingPrice = selectedToppings.reduce((acc, curr) => {
+                return acc + curr.price
+            }, 0)
 
-            return isExists
+            return (productConfPrice + toppingPrice)
+        } else {
+            return 0
         }
-    }, [product, selectedToppings, productDataCapture, cartItems])
 
-    // remove product from cart which has current product configuration
+    }, [product, productDataCapture, selectedToppings])
+
+    // check if item already present in the cart
+    const isProductAlreadyExists = useMemo(() => {
+
+        const itemToSearch: CartItem = {
+            _id: product._id,
+            name: product.name,
+            image: product.image,
+            tenantId: product.tenantId,
+            productConfiguration: productDataCapture,
+            toppings: selectedToppings,
+            qty: 1,
+            totalPrice,
+        }
+
+        const result = checkIfItemExistsInCart(cartItems, itemToSearch)
+        return result
+
+    }, [product, productDataCapture, selectedToppings, cartItems, totalPrice])
+
+    // remove product from cart
     const removeProductFromCart = () => {
-        const updateCartItems = cartItems.filter(({ qty, ...productFromCart }) => {
+        if (isProductAlreadyExists.isExists) {
+            // remove items form the array of cartItems 
+            const updatedCartItems = cartItems.filter((_, index) => index !== isProductAlreadyExists.itemIndex)
+            dispatch(updateCart(updatedCartItems))
 
-            const productCartData = {
-                product,
-                productConfiguration: productDataCapture,
-                toppings: selectedToppings,
-            }
-
-            const productFromCartHash = Crypto.SHA256(JSON.stringify(productFromCart)).toString();
-            const productCartDataHash = Crypto.SHA256(JSON.stringify(productCartData)).toString();
-
-            return productFromCartHash !== productCartDataHash
-        })
-        dispatch(updateCart(updateCartItems))
+            toast("Product removed from Cart", {
+                description: `Removed ${product.name}`,
+            })
+        }
     }
 
     // add product to cart
     const addProductToCart = () => {
 
         const productCartData: CartItem = {
-            product,
-            toppings: selectedToppings,
+            _id: product._id,
+            name: product.name,
+            image: product.image,
+            tenantId: product.tenantId,
             productConfiguration: productDataCapture,
-            qty: 1
+            toppings: selectedToppings,
+            qty: 1,
+            totalPrice,
         }
 
-
-        if (isProductAlreadyExists) {
-
-            const updateCartItems = cartItems.map((item) => {
-                return item.product?._id === product._id ? { ...item, qty: item.qty + 1 } : item
+        if (isProductAlreadyExists.isExists) {
+            const updateCartItems = cartItems.map((item, index) => {
+                if (isProductAlreadyExists.itemIndex === index) {
+                    const currentQty = item.qty + 1
+                    const currentPrice = item.totalPrice / item.qty;
+                    const updatedTotalPrice = currentPrice * currentQty;
+                    return { ...item, qty: currentQty, totalPrice: updatedTotalPrice }
+                } else {
+                    return item
+                }
             })
 
             dispatch(updateCart(updateCartItems))
@@ -95,14 +123,15 @@ function ProductDialog({ children, product, category }: PropTypes) {
             dispatch(addToCart(productCartData))
         }
 
-        toast(!isProductAlreadyExists ? "Product added to Cart" : "Product quantity increased", {
-            description: `${!isProductAlreadyExists ? "Added" : "Updated"} ${product.name}`,
+        toast(!isProductAlreadyExists.isExists ? "Product added to Cart" : "Product quantity increased", {
+            description: `${!isProductAlreadyExists.isExists ? "Added" : "Updated"} ${product.name}`,
             action: {
                 label: "Go to Cart",
                 actionButtonStyle: { backgroundColor: "orangered" },
-                onClick: () => alert('TODO: redirection to cart page is yet to implement'),
+                onClick: () => router.push('/cart'),
             },
         })
+
         setOpen(false)
         setSelectedToppings([])
     }
@@ -118,26 +147,7 @@ function ProductDialog({ children, product, category }: PropTypes) {
         }
     }, [product, open])
 
-    // producing total price of the chosen product
-    const totalPrice = useMemo(() => {
 
-
-        if (productDataCapture && product) {
-
-            // 1. calculate main pricing
-            const productConfPrice = Object.entries(productDataCapture).reduce((acc, [key, value]) => {
-                return acc + (product.priceConfiguration[key].availableOptions[value] || 0)
-            }, 0)
-
-            // 2. calculate topping cost
-            const toppingPrice = selectedToppings.reduce((acc, curr) => {
-                return acc + curr.price
-            }, 0)
-
-            return productConfPrice + toppingPrice
-        }
-
-    }, [product, productDataCapture, selectedToppings])
 
 
     return <Dialog onOpenChange={(e) => setOpen(e)} open={open} >
@@ -202,7 +212,7 @@ function ProductDialog({ children, product, category }: PropTypes) {
             <div className="flex items-center justify-end gap-10 bg-white py-2 container rounded-b-lg">
                 <span className="font-bold text-xl">₹{totalPrice}</span>
                 {
-                    !isProductAlreadyExists
+                    !isProductAlreadyExists.isExists
                         ? <Button onClick={addProductToCart}>
                             <ShoppingCart size={22} />
                             <span className="ml-3">Add to Cart</span>

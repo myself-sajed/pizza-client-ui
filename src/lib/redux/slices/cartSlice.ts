@@ -6,11 +6,16 @@ export interface ProductConfiguration {
   [key: string]: string;
 }
 
-export interface CartItem {
-  product: Product | null;
+export interface CartItem
+  extends Pick<Product, "_id" | "name" | "image" | "tenantId"> {
+  _id: string;
+  name: string;
+  image: string;
+  tenantId: string;
   productConfiguration: ProductConfiguration | null;
   toppings: Topping[] | [];
   qty: number;
+  totalPrice: number;
 }
 
 export interface CartState {
@@ -27,10 +32,14 @@ export const cartSlice: Slice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const newItem = {
-        product: action.payload.product,
+        _id: action.payload._id,
+        name: action.payload.name,
+        image: action.payload.image,
+        tenantId: action.payload.tenantId,
         productConfiguration: action.payload.productConfiguration,
         toppings: action.payload.toppings,
         qty: action.payload.qty,
+        totalPrice: action.payload.totalPrice,
       };
 
       window.localStorage.setItem(
@@ -49,17 +58,10 @@ export const cartSlice: Slice = createSlice({
         cartItems: action.payload,
       };
     },
-
-    clearCart: () => {
-      window.localStorage.setItem("cartItems", JSON.stringify([]));
-      return {
-        cartItems: [],
-      };
-    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, updateCart, clearCart } = cartSlice.actions;
+export const { addToCart, updateCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
