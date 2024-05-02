@@ -10,9 +10,9 @@ const MainProducts = async () => {
     const categories = await Promise.resolve(getCategories())
 
     return (
-        <div>
+        <div id="menu">
 
-            <Tabs id="menu" defaultValue={categories.data?.[0]._id}>
+            <Tabs defaultValue={categories.data?.[0]._id}>
                 <TabsList>
                     {
                         categories.data?.map((category: Category) => {
