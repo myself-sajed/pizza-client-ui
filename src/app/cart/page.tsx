@@ -38,7 +38,7 @@ const CartPage = () => {
                         }
                     </div>
                 </div>
-                <div className='bg-white mt-5 p-3 space-y-4 rounded-md'>
+                <div className='bg-white mt-5 p-5 space-y-4 rounded-md'>
                     {
                         (cartItems && cartItems?.length) > 0
                             ? (

@@ -6,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Category, Product } from "@/types"
 import ProductDialog from "./ProductDialog"
 import { showMinimumPrice } from "@/lib/utils"
@@ -18,7 +17,15 @@ const ProductCard = ({ product, category }: PropType) => {
     return (
         <Card className="rounded-lg border-none">
             <CardHeader>
-                <Image className="mx-auto" src={product.image} alt={"product-image-pizza"} height={130} width={130} />
+                <div className="h-[180px] w-[180px] mx-auto">
+                    <Image
+                        src={product.image}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ width: '100%', height: 'auto' }} alt={product.name}
+                    />
+                </div>
             </CardHeader>
             <CardContent>
                 <div>
