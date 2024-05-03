@@ -19,7 +19,7 @@ const CartPage = () => {
     const tenantId: string | null = (useAppSelector((state) => state.tenant.selectedTenant))?.id
 
 
-    const { data: products, isError } = useQuery({
+    const { data: products } = useQuery({
         queryKey: ['products-list', tenantId],
         queryFn: () => {
             return getProducts(tenantId)
