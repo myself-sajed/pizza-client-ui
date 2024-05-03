@@ -29,8 +29,8 @@ export const getCategories = async () => {
   return { status: res.ok, data };
 };
 
-export const getProducts = async (tenantId: string | null) => {
-  const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}&limit=100`;
+export const getProducts = async (tenantId: string | null, limit = 100) => {
+  const link = `${clientAPIURL}/catalog/products/getProducts?tenantId=${tenantId}&limit=${limit}`;
   return axios.get(link);
 };
 
