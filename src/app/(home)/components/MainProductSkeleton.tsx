@@ -1,14 +1,14 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
-const MainProductSkeleton = () => {
+const MainProductSkeleton = ({ forProducts = false, arr = [1, 2, 3, 4] }) => {
     return (
-        <div className='my-6 container'>
-            <Skeleton className="h-10 my-3 w-full bg-[#e2e2e2]" />
+        <div className={`my-6 ${!forProducts && 'container'}`}>
+            {!forProducts && <Skeleton className="h-10 my-3 w-full bg-[#e2e2e2]" />}
 
-            <div className="grid grid-cols-5 gap-5 w-full">
+            <div className="grid grid-cols-4 gap-5 w-full">
                 {
-                    [1, 2, 3, 4, 5].map((item) => {
+                    arr.map((item) => {
                         return <div key={item} className="flex flex-col space-y-3">
                             <Skeleton className="h-[125px] w-[250px] rounded-xl bg-[#e2e2e2]" />
                             <div className="space-y-2">
