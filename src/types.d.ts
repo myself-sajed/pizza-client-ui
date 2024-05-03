@@ -43,6 +43,7 @@ export interface Product {
   image: string;
   tenantId: string;
   categoryId: string;
+  category: Category;
   priceConfiguration: PriceConfiguration;
   attributes: Attributes[];
 }
