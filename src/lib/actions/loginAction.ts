@@ -24,9 +24,10 @@ const loginAction = async (prevState: any, formData: FormData) => {
     });
 
     if (!res.ok) {
+      const error = await res.json();
       return {
         status: "error",
-        message: "Username or password is incorrect",
+        message: error.errors[0].msg,
       };
     }
 

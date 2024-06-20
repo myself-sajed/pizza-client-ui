@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import loginAction from "@/lib/actions/loginAction"
 import { useFormState, useFormStatus } from "react-dom"
-import { Loader } from "lucide-react"
+import { AlertCircle, Loader } from "lucide-react"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 const initialState = {
     status: '',
@@ -29,6 +30,15 @@ const LoginPage = () => {
                             Enter your email below to login to your account
                         </p>
                     </div>
+                    {
+                        state.status === "error" && <Alert variant="destructive" className="p-2">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle className="text-sm font-semibold ml-2">Error Occured</AlertTitle>
+                            <AlertDescription className="ml-2">
+                                {state.message}
+                            </AlertDescription>
+                        </Alert>
+                    }
                     <form action={formAction} className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
