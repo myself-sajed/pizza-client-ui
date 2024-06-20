@@ -1,5 +1,6 @@
 import { apiURL, clientAPIURL } from "@/constants";
 import axios from "axios";
+// import { cookies } from "next/headers";
 
 export const getTenants = async () => {
   const link = `${apiURL}/auth/tenant/getAllTenantList`;

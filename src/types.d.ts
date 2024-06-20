@@ -54,3 +54,11 @@ export interface Topping {
   price: number;
   image: string;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  tenant: Tenant | null;
+}

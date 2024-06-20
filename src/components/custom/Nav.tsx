@@ -5,6 +5,7 @@ import { getTenants } from "@/app/(home)/js"
 import { Badge } from "../ui/badge"
 import NavCart from "./NavCart"
 import NavTenantSelect from "./NavTenantSelect"
+import LogoutAndLogin from "./LogoutAndLogin"
 
 const Nav = async () => {
     const tenants = await getTenants()
@@ -40,7 +41,7 @@ const Nav = async () => {
                             <Phone size={20} /> <span>91-91-91-9191</span>
                         </li>
                         <li>
-                            <Button size={"sm"} >Logout</Button>
+                            <LogoutAndLogin />
                         </li>
                     </ul>
                 </div>

@@ -10,6 +10,7 @@ import loginAction from "@/lib/actions/loginAction"
 import { useFormState, useFormStatus } from "react-dom"
 import { AlertCircle, Loader } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useRouter } from "next/navigation"
 
 const initialState = {
     status: '',
@@ -19,6 +20,11 @@ const initialState = {
 const LoginPage = () => {
 
     const [state, formAction] = useFormState(loginAction, initialState)
+    const router = useRouter()
+
+    if (state.status === 'success') {
+        router.replace('/')
+    }
 
     return (
         <div className="w-full lg:grid lg:grid-cols-2 h-full py-12">
