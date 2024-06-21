@@ -10,7 +10,6 @@ const TokenRefresher = ({ children }: { children: React.ReactNode }): JSX.Elemen
     };
 
     const refreshAccessToken = async () => {
-        console.log("Refreshing access token");
         return await axios.get("/api/auth/refreshToken");
     };
 
@@ -23,19 +22,15 @@ const TokenRefresher = ({ children }: { children: React.ReactNode }): JSX.Elemen
 
         interval.current = setInterval(async () => {
             const accessTokenResponse = await getAccessToken();
-            console.log("accesstoken res:", accessTokenResponse?.data?.token)
             if (!accessTokenResponse?.data.token) {
-                console.log("returned acc token")
                 return;
             }
 
             const accessToken = accessTokenResponse.data.token.value;
             if (!accessToken) {
-                console.log("returned acc token value")
                 return;
             }
             const refreshAccessTokenResponse = await refreshAccessToken();
-            console.log(refreshAccessTokenResponse.data);
         }, 290000);
     }, []);
 
