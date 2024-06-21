@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 import { CreditCard, IndianRupee } from "lucide-react"
 import { ChangeEvent, useState } from "react"
+import { AddAddressDialog } from "./components/AddAddressDialog"
 
 const CheckoutPage = () => {
     const modes = [{ title: "Card", icon: <CreditCard size={20} /> }, { title: "Cash", icon: <IndianRupee size={18} /> }]
@@ -27,7 +28,10 @@ const CheckoutPage = () => {
                     <InputWithLabel onChange={handleChange} label="Email" type="email" />
                     <div>
 
-                        <Label htmlFor="address">Address</Label>
+                        <div className="flex items-center justify-between mb-2">
+                            <Label htmlFor="address">Address</Label>
+                            <AddAddressDialog />
+                        </div>
                         <RadioGroup className="grid grid-cols-2" defaultValue={`address-0`}>
                             {
                                 ["Sakhla Plot, Dnyaneshwar Nagar, Parbhani, Maharashtra, India 431401", "Inayat Nagar, Old Pedgaon Road, Parbhani, Maharashtra, India 431401"].map((add, index) => {
