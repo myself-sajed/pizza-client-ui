@@ -7,6 +7,7 @@ import { ReactQueryClientProvider } from "@/components/custom/ReactQueryClientPr
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/custom/Footer";
+import TokenRefresher from "./TokenRefresher";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", });
 
@@ -33,8 +34,10 @@ export default function RootLayout({
             <div className="min-h-screen">
               <Nav />
               <main>
-                {children}
-                <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316" }, duration: 2300 }} />
+                <TokenRefresher>
+                  {children}
+                  <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316" }, duration: 2300 }} />
+                </TokenRefresher>
               </main>
             </div>
             <Footer />
