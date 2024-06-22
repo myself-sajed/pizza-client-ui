@@ -6,39 +6,57 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 import { CreditCard, IndianRupee } from "lucide-react"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react"
 import { AddAddressDialog } from "./AddAddressDialog"
+import { Customer } from "@/types"
+import { ICheckoutForm } from "./CheckoutForm"
+import { Textarea } from "@/components/ui/textarea"
+
+type PropType = {
+    customer: Customer,
+    checkoutForm: ICheckoutForm,
+    setCheckoutForm: Dispatch<SetStateAction<ICheckoutForm>>
+}
+
+const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }: PropType) => {
+
+    const modes = [{ title: "Online", icon: <CreditCard size={20} /> }, { title: "Cash", icon: <IndianRupee size={18} /> }]
 
 
-const CustomerDetailsPaymentMode = () => {
-    const modes = [{ title: "Card", icon: <CreditCard size={20} /> }, { title: "Cash", icon: <IndianRupee size={18} /> }]
-    const [paymentMode, setPaymentMode] = useState(modes[0].title)
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-
-    }
     return (
         <div className="space-y-5 bg-white p-4 rounded-lg col-span-2">
             <h1 className="pb-3 text-xl font-semibold text-primary border-b">Customer Details</h1>
-            <InputWithLabel onChange={handleChange} label="Full Name" type="text" />
-            <InputWithLabel onChange={handleChange} label="Email" type="email" />
+            <InputWithLabel type="text" value={customer.name} label="Full Name" disabled={true} />
+            <InputWithLabel type="email" value={customer.email} label="Email" disabled={true} />
             <div>
 
                 <div className="flex items-center justify-between mb-2">
                     <Label htmlFor="address">Address</Label>
-                    <AddAddressDialog />
+                    {customer.address.length > 0 && <AddAddressDialog customerId={customer._id} />}
                 </div>
-                <RadioGroup className="grid grid-cols-2" defaultValue={`address-0`}>
-                    {
-                        ["Sakhla Plot, Dnyaneshwar Nagar, Parbhani, Maharashtra, India 431401", "Inayat Nagar, Old Pedgaon Road, Parbhani, Maharashtra, India 431401"].map((add, index) => {
-                            return <div key={`address-${index}`} className="border p-3 bg-background rounded-md">
-                                <RadioGroupItem className="mr-5" value={add} id={`address-${index}`} />
-                                <Label className="leading-5" htmlFor={`address-${index}`}>{add}</Label>
-                            </div>
-                        })
-                    }
+                {
+                    customer.address.length > 0 ?
+                        <RadioGroup onValueChange={(value) => setCheckoutForm((prev) => {
+                            return { ...prev, address: value }
+                        })} className="grid grid-cols-2" defaultValue={`address-0`}>
+                            {
+                                customer.address.map((add, index) => {
+                                    return <div key={`address-${index}`} className="border p-3 bg-background rounded-md">
+                                        <RadioGroupItem className="mr-5" value={add.address} id={`address-${index}`} />
+                                        <Label className="leading-5" htmlFor={`address-${index}`}>{add.address}</Label>
+                                    </div>
+                                })
+                            }
 
-                </RadioGroup>
+                        </RadioGroup>
+                        : <div className="p-4 flex flex-col items-center justify-center w-full">
+                            <div className="mt-4">
+                                <AddAddressDialog customerId={customer._id} />
+                            </div>
+                        </div>
+                }
+
+
 
             </div>
             <div>
@@ -46,7 +64,9 @@ const CustomerDetailsPaymentMode = () => {
                 <div className="grid grid-cols-2 gap-2">
                     {
                         modes.map((mode, index) => {
-                            return <div key={`address-${index}`} className={cn("border-2 p-3 bg-background rounded-md flex items-center gap-4 cursor-pointer", paymentMode === mode.title && "border-primary")} onClick={() => setPaymentMode(mode.title)} >
+                            return <div key={`address-${index}`} className={cn("border-2 p-3 bg-background rounded-md flex items-center gap-4 cursor-pointer", checkoutForm.paymentMode === mode.title && "border-primary")} onClick={() => setCheckoutForm((prev) => {
+                                return { ...prev, paymentMode: mode.title }
+                            })} >
                                 <span>{mode.icon}</span><span className="font-semibold text-sm">{mode.title}</span>
                             </div>
                         })
@@ -55,7 +75,13 @@ const CustomerDetailsPaymentMode = () => {
                 </div>
 
             </div>
-            <InputWithLabel onChange={handleChange} label="Comment" type="textarea" />
+            <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="comment">Comment</Label>
+                <Textarea onChange={(e) => setCheckoutForm((prev) => {
+                    return { ...prev, comment: e.target.value }
+                })} value={checkoutForm.comment} id="comment" placeholder="Add a comment" />
+
+            </div>
         </div>
     )
 }
