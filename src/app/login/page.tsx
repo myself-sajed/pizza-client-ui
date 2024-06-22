@@ -1,5 +1,5 @@
 import getSession from "@/lib/session"
-import LoginForm from "../checkout/components/LoginForm"
+import LoginForm from "./components/LoginForm"
 import { redirect } from "next/navigation"
 
 const LoginPage = async ({ searchParams }: { searchParams: { redirectTo: string | undefined | null } }) => {
