@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Customer } from '@/types'
 import React from 'react'
 
-const OrderDetails = () => {
+const OrderDetails = ({ customer }: { customer: Customer }) => {
     return (
         <div className="bg-white p-4 rounded-lg">
             <h1 className="pb-3 text-xl font-semibold text-primary border-b">Order Summary</h1>
