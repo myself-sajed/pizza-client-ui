@@ -23,36 +23,43 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
 
     const restoParams = useSearchParams();
     const resto = restoParams.get('restaurant');
-
     const pathname = usePathname()
 
-
     useEffect(() => {
-        if (resto || selectedTenant) {
-            const foundTenant = tenants.data.tenants.find((item) => {
-                return (item.id).toString() === (resto || (selectedTenant.id).toString())
-            });
+        const updateTenant = () => {
+            const foundTenant = tenants.data.tenants.find((item) => item.id.toString() === (resto || selectedTenant?.id.toString()));
             if (foundTenant) {
                 dispatch(selectTenant(foundTenant));
-                selectedTenant && router.replace(`?restaurant=${foundTenant.id}`);
+                if (selectedTenant) {
+                    const params = new URLSearchParams(restoParams.toString());
+                    params.set('restaurant', foundTenant.id.toString());
+                    router.replace(`${pathname}?${params.toString()}`);
+                }
             } else {
                 dispatch(selectTenant({ id: "null", name: "Global (All)" }));
-                selectedTenant && router.replace(`?restaurant=Global`);
+                if (selectedTenant) {
+                    const params = new URLSearchParams(restoParams.toString());
+                    params.set('restaurant', 'Global');
+                    router.replace(`${pathname}?${params.toString()}`);
+                }
             }
-        } else {
-            dispatch(selectTenant({ id: "null", name: "Global (All)" }));
-            selectedTenant && router.replace(`?restaurant=Global`);
-        }
+        };
+
+        updateTenant();
     }, [resto, dispatch, tenants.data.tenants, pathname]);
 
     const handleSelectTenant = (tenant: string) => {
         const foundTenant = tenants.data.tenants.find((item) => item.id === tenant);
         if (foundTenant) {
             dispatch(selectTenant(foundTenant));
-            router.replace(`?restaurant=${tenant}`);
+            const params = new URLSearchParams(restoParams.toString());
+            params.set('restaurant', tenant);
+            router.replace(`${pathname}?${params.toString()}`);
         } else {
             dispatch(selectTenant({ id: "null", name: "Global (All)" }));
-            router.replace(`?restaurant=Global`);
+            const params = new URLSearchParams(restoParams.toString());
+            params.set('restaurant', 'Global');
+            router.replace(`${pathname}?${params.toString()}`);
         }
     };
 
