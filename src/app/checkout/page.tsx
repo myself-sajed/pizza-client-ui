@@ -8,7 +8,7 @@ const CheckoutPage = async () => {
     const session = await getSession()
 
     if (!session) {
-        redirect('/login')
+        redirect('/login?redirectTo=/checkout')
     }
 
     return (
