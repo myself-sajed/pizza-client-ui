@@ -62,3 +62,15 @@ export interface User {
   role: string;
   tenant: Tenant | null;
 }
+export interface Customer {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  address: Address[];
+}
+
+export interface Address {
+  address: string;
+  isDefault: boolean;
+}
