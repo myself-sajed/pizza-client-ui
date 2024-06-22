@@ -22,12 +22,6 @@ const LoginForm = () => {
     const [state, formAction] = useFormState(loginAction, initialState)
     const router = useRouter()
 
-
-    if (state.status === 'success') {
-        console.log('redirected')
-        router.replace('/')
-    }
-
     return (
         <div className="w-full lg:grid lg:grid-cols-2 h-full py-12">
             <div className="flex items-center justify-center">
