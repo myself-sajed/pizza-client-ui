@@ -2,11 +2,16 @@ import getSession from "@/lib/session"
 import LoginForm from "../checkout/components/LoginForm"
 import { redirect } from "next/navigation"
 
-const LoginPage = async () => {
+const LoginPage = async ({ searchParams }: { searchParams: { redirectTo: string | undefined | null } }) => {
 
     const session = await getSession()
 
     if (session) {
+
+        if (searchParams.redirectTo) {
+            redirect(searchParams.redirectTo)
+        }
+
         redirect('/')
     }
 
