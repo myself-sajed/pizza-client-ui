@@ -36,7 +36,7 @@ export default function RootLayout({
               <main>
                 <TokenRefresher>
                   {children}
-                  <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316" }, duration: 2300 }} />
+                  <Toaster position="top-right" toastOptions={{ actionButtonStyle: { backgroundColor: "#F97316" }, duration: 2300 }} richColors />
                 </TokenRefresher>
               </main>
             </div>
