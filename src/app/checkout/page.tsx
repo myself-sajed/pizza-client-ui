@@ -1,6 +1,6 @@
 import getSession from "@/lib/session"
 import CustomerDetailsPaymentMode from "./components/CustomerDetailsPaymentMode"
-import OrderDetails from "./components/OrderDetails"
+import OrderDetails from "./components/OrderSummary"
 import { redirect } from "next/navigation"
 import CheckoutForm from "./components/CheckoutForm"
 
