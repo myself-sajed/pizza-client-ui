@@ -2,13 +2,27 @@
 "use client"
 
 import { Tenant } from "@/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { selectTenant } from "@/lib/redux/slices/selectedTenantSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import SelectTenant from "./SelectTenant";
+import { Button } from "@/components/ui/button"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { toast } from "sonner";
 
-interface NavTenantPropType {
+
+export interface NavTenantPropType {
     tenants: {
         data: {
             tenants: Tenant[]
@@ -20,6 +34,8 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
     const dispatch = useAppDispatch();
     const selectedTenant = useAppSelector((state) => state.tenant.selectedTenant);
     const router = useRouter();
+    const [open, setOpen] = useState(false)
+
 
     const restoParams = useSearchParams();
     const resto = restoParams.get('restaurant');
@@ -36,11 +52,14 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
                     router.replace(`${pathname}?${params.toString()}`);
                 }
             } else {
-                dispatch(selectTenant({ id: "null", name: "Global (All)" }));
-                if (selectedTenant) {
-                    const params = new URLSearchParams(restoParams.toString());
-                    params.set('restaurant', 'Global');
-                    router.replace(`${pathname}?${params.toString()}`);
+                const localStorageTenant = JSON.parse(localStorage.getItem('selectedTenant') || "{}")
+                if (localStorageTenant?.id) {
+                    const foundTenant = tenants.data.tenants.find((item) => item.id.toString() === (resto || localStorageTenant?.id.toString()));
+                    if (foundTenant) {
+                        const params = new URLSearchParams(restoParams.toString());
+                        params.set('restaurant', foundTenant.id.toString());
+                        router.replace(`${pathname}?${params.toString()}`);
+                    }
                 }
             }
         };
@@ -55,31 +74,56 @@ const NavTenantSelect = ({ tenants }: NavTenantPropType) => {
             const params = new URLSearchParams(restoParams.toString());
             params.set('restaurant', tenant);
             router.replace(`${pathname}?${params.toString()}`);
-        } else {
-            dispatch(selectTenant({ id: "null", name: "Global (All)" }));
-            const params = new URLSearchParams(restoParams.toString());
-            params.set('restaurant', 'Global');
-            router.replace(`${pathname}?${params.toString()}`);
         }
     };
 
+    const handleOpenChange = (isOpen: boolean) => {
+        if (!localStorage.getItem('selectedTenant')) {
+            setOpen(true)
+            toast.error("Please select a Restaurant")
+            return
+        }
+        setOpen(isOpen)
+    }
+
+    useEffect(() => {
+        if (!localStorage.getItem('selectedTenant')) {
+            setOpen(true)
+        }
+    }, [pathname])
+
+    const handleCloseDialog = () => {
+        if (!localStorage.getItem('selectedTenant')) {
+            toast.error("Please select a Restaurant")
+            setOpen(true)
+        } else {
+            setOpen(false)
+        }
+    }
+
     return (
-        <div className="flex items-center justify-start gap-1 animate-once animate-fade-up animate-delay-1000 animate-duration-[2000]">
-            <span className="text-sm">&#128994;</span>
-            <Select onValueChange={(tenant) => handleSelectTenant(tenant)}>
-                <SelectTrigger className="md:w-[180px] w-[120px] focus:ring-0 focus:ring-transparent focus:outline-none border-none bg-transparent focus:border-none">
-                    <SelectValue placeholder={selectedTenant ? selectedTenant?.name : "Global (All)"} />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value={"null"}>Global (All)</SelectItem>
-                    {tenants?.data.tenants?.map((tenant: Tenant) => (
-                        <SelectItem defaultChecked={tenant.id === selectedTenant?.id} key={tenant.id} value={tenant.id}>
-                            {tenant.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-        </div>
+        <>
+            <SelectTenant handleSelectTenant={handleSelectTenant} tenants={tenants?.data?.tenants} selectedTenant={selectedTenant} />
+            <Dialog open={open} onOpenChange={handleOpenChange} >
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Select a restaurant</DialogTitle>
+                        <DialogDescription>
+                            You need to select a restaurant to order food.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="p-4">
+                        <SelectTenant handleSelectTenant={handleSelectTenant} tenants={tenants?.data?.tenants} selectedTenant={selectedTenant} />
+                    </div>
+                    {
+                        selectedTenant?.id && <DialogFooter>
+                            <Button onClick={handleCloseDialog} type="submit">{`Let's`} Order</Button>
+                        </DialogFooter>
+                    }
+
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };
 
