@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input'
 import { verifyCoupon } from '@/lib/http/endpoints'
 import { useAppSelector } from '@/lib/redux/hooks'
 import { CartItem } from '@/lib/redux/slices/cartSlice'
-import { Customer } from '@/types'
 import { Loader, Trash } from 'lucide-react'
 import React, { useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -13,11 +12,21 @@ import { toast } from 'sonner'
 const TAXES = 12
 const DELIVERY_CHARGE = 50
 
-const OrderSummary = ({ customer }: { customer: Customer }) => {
+export interface ICoupon {
+    discount: number;
+    title: null;
+}
+
+type PropTypes = {
+    coupon: ICoupon
+    setCoupon: React.Dispatch<React.SetStateAction<ICoupon>>;
+    initialCouponState: ICoupon,
+    isPending: boolean
+}
+
+const OrderSummary = ({ coupon, setCoupon, initialCouponState, isPending }: PropTypes) => {
 
     const cartItems = useAppSelector((state) => state.cart?.cartItems)
-    const initialCouponState = { discount: 10, title: null }
-    const [coupon, setCoupon] = useState(initialCouponState)
     const couponRef = useRef<HTMLInputElement>(null)
     const selectedTenant = useAppSelector((state) => state.tenant?.selectedTenant)
     const [loading, setLoading] = useState(false)
@@ -99,7 +108,7 @@ const OrderSummary = ({ customer }: { customer: Customer }) => {
 
                 <div>
                     <div className="flex w-full items-center space-x-2">
-                        <Input ref={couponRef} type="text" placeholder="Coupon Code" required />
+                        <Input ref={couponRef} type="text" placeholder="Coupon Code" />
                         <Button disabled={loading || (coupon.title ? true : false)} onClick={validateCoupon} variant="outline" className="bg-background" type="button">{loading ? <Loader className='animate-spin' size={19} /> : "Apply"}</Button>
                     </div>
                     <p className='text-xs mt-1 text-yellow-500'>Note: Coupon Codes are case-sensitive</p>
@@ -108,7 +117,16 @@ const OrderSummary = ({ customer }: { customer: Customer }) => {
 
             </div>
 
-            <Button className="w-full mt-4" type="submit">Place Order</Button>
+            <Button className="w-full mt-4 space-x-3" disabled={isPending} type="submit">
+                {
+                    !isPending
+                        ? <span>Place Order</span>
+                        : <>
+                            <span><Loader size={20} className='animate-spin' /></span>
+                            <span>Placing Order...</span>
+                        </>
+                }
+            </Button>
         </div>
     )
 }

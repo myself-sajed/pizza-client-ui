@@ -20,7 +20,7 @@ type PropType = {
 
 const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }: PropType) => {
 
-    const modes = [{ title: "Online", icon: <CreditCard size={20} /> }, { title: "Cash", icon: <IndianRupee size={18} /> }]
+    const modes = [{ title: "Card", icon: <CreditCard size={20} /> }, { title: "Cash", icon: <IndianRupee size={18} /> }]
 
 
     return (
@@ -36,14 +36,15 @@ const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }:
                 </div>
                 {
                     customer.address.length > 0 ?
-                        <RadioGroup onValueChange={(value) => setCheckoutForm((prev) => {
-                            return { ...prev, address: value }
+                        <RadioGroup required onValueChange={(value) => setCheckoutForm((prev) => {
+                            const index = parseInt(value, 10);
+                            return { ...prev, address: customer.address[index] }
                         })} className="grid grid-cols-2" defaultValue={`address-0`}>
                             {
                                 customer.address.map((add, index) => {
                                     const address = `${add.addressLine}, ${add.city}, ${add.state} - ${add.pincode}`
                                     return <div key={`address-${index}`} className="border p-3 bg-background rounded-md">
-                                        <RadioGroupItem className="mr-5" value={address} id={`address-${index}`} />
+                                        <RadioGroupItem className="mr-5" value={`${index}`} id={`address-${index}`} />
                                         <Label className="leading-5" htmlFor={`address-${index}`}>{address}</Label>
                                     </div>
                                 })
