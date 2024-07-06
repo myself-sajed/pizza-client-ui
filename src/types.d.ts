@@ -1,3 +1,5 @@
+import { ICoupon } from "./app/checkout/components/OrderSummary";
+
 export interface Tenant {
   id: string;
   name: string;
@@ -80,6 +82,20 @@ export interface Customer {
 }
 
 export interface Address {
-  address: string;
+  addressLine: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
   isDefault: boolean;
+}
+
+export interface Order {
+  cartItems: CartItems[];
+  customerId: string;
+  tenantId: string;
+  address: Address;
+  comment: string;
+  coupon: ICoupon;
+  paymentMode: string;
 }
