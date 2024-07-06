@@ -1,4 +1,4 @@
-import { Address } from "@/types";
+import { Address, Order } from "@/types";
 import { api } from "./api";
 
 export const getCustomer = () => {
@@ -13,5 +13,13 @@ export const verifyCoupon = (code: string, tenantId: string) => {
   return api.post(`/order/coupon/verify`, {
     code,
     tenantId: tenantId.toString(),
+  });
+};
+
+export const createOrder = (orderData: Order, idemKey: string) => {
+  return api.post(`/order/order/createOrder`, orderData, {
+    headers: {
+      "Idem-Key": idemKey,
+    },
   });
 };
