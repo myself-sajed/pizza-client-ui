@@ -41,9 +41,10 @@ const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }:
                         })} className="grid grid-cols-2" defaultValue={`address-0`}>
                             {
                                 customer.address.map((add, index) => {
+                                    const address = `${add.addressLine}, ${add.city}, ${add.state} - ${add.pincode}`
                                     return <div key={`address-${index}`} className="border p-3 bg-background rounded-md">
-                                        <RadioGroupItem className="mr-5" value={add.address} id={`address-${index}`} />
-                                        <Label className="leading-5" htmlFor={`address-${index}`}>{add.address}</Label>
+                                        <RadioGroupItem className="mr-5" value={address} id={`address-${index}`} />
+                                        <Label className="leading-5" htmlFor={`address-${index}`}>{address}</Label>
                                     </div>
                                 })
                             }

@@ -8,9 +8,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { statesInIndia } from "@/constants"
 import { addAddress } from "@/lib/http/endpoints"
+import { Address } from "@/types"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Plus } from "lucide-react"
 import { FormEvent, useState } from "react"
@@ -18,34 +22,36 @@ import { toast } from "sonner"
 
 export function AddAddressDialog({ customerId }: { customerId: string }) {
 
+    const initialState = { addressLine: "", city: "", state: "", country: "India", pincode: "", isDefault: false }
+    const [address, setAddress] = useState(initialState)
+    const [open, setOpen] = useState(false)
+    type StateName = keyof typeof statesInIndia;
+
 
     const queryClient = useQueryClient()
 
     const { mutate: addAddressMutate } = useMutation({
         mutationKey: ['add-address'],
-        mutationFn: ({ address, customerId }: { address: string, customerId: string }) => {
+        mutationFn: ({ address, customerId }: { address: Address, customerId: string }) => {
             return addAddress(address, customerId)
         },
         onSuccess: () => {
             toast.success("Address added successfully!")
             queryClient.invalidateQueries({ queryKey: ['customer'] })
-            setAddress("")
+            setAddress(initialState)
             setOpen(false)
         },
         onError: () => {
             toast.error("Error adding address")
-            setAddress("")
+            setAddress(initialState)
         }
     })
-
-    const [address, setAddress] = useState("")
-    const [open, setOpen] = useState(false)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         e.stopPropagation()
         if (address) {
-            addAddressMutate({ address, customerId })
+            addAddressMutate({ address: address as Address, customerId })
         }
     }
 
@@ -63,21 +69,90 @@ export function AddAddressDialog({ customerId }: { customerId: string }) {
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
-                    <div>
-                        <Label htmlFor="name">
-                            Address
-                        </Label>
-                        <Textarea
-                            id="adress"
-                            placeholder="Enter your new address"
-                            className="mt-2"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            required
-                        />
+                    <div className="space-y-4">
+                        <div>
+                            <Label htmlFor="address">
+                                Address Line
+                            </Label>
+                            <Textarea
+                                id="address"
+                                placeholder="Enter your new address"
+                                value={address.addressLine}
+                                onChange={(e) => setAddress((prev) => {
+                                    return { ...prev, addressLine: e.target.value }
+                                })}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="state">
+                                State
+                            </Label>
+                            <Select required onValueChange={(state) => setAddress((prev) => {
+                                return { ...prev, state }
+                            })}>
+                                <SelectTrigger id="state" className="w-full">
+                                    <SelectValue placeholder="Select a state" />
+                                </SelectTrigger>
+                                <SelectContent >
+                                    <SelectGroup>
+                                        <SelectLabel>Choose State</SelectLabel>
+
+                                        {
+                                            Object.keys(statesInIndia).map((state) => {
+                                                return <SelectItem key={state} value={state}>{state}</SelectItem>
+                                            })
+                                        }
+
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div>
+                                <Label htmlFor="city">
+                                    City
+                                </Label>
+                                <Select required onValueChange={(city) => setAddress((prev) => {
+                                    return { ...prev, city }
+                                })} disabled={!address.state}>
+                                    <SelectTrigger id="city" className="w-[180px]">
+                                        <SelectValue placeholder="Select a city" />
+                                    </SelectTrigger>
+                                    <SelectContent >
+                                        <SelectGroup>
+                                            <SelectLabel>Choose a City</SelectLabel>
+
+                                            {
+                                                statesInIndia[address.state as StateName]?.map((city) => {
+                                                    return <SelectItem key={city} value={city}>{city}</SelectItem>
+                                                })
+                                            }
+
+
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div>
+                                <Label htmlFor="pincode">
+                                    Pincode
+                                </Label>
+                                <Input
+                                    id="pincode"
+                                    placeholder="Enter Pincode"
+                                    value={address.pincode}
+                                    onChange={(e) => setAddress((prev) => {
+                                        return { ...prev, pincode: e.target.value }
+                                    })}
+                                    required
+                                />
+                            </div>
+                        </div>
+
                     </div>
-                    <DialogFooter className="mt-3">
-                        <Button type="submit">Save Address</Button>
+                    <DialogFooter className="mt-12">
+                        <Button className="w-full" type="submit">Save Address</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

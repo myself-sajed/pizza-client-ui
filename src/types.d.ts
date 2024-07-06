@@ -4,6 +4,15 @@ export interface Tenant {
   address: string;
 }
 
+export interface Address {
+  addressLine: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+  isDefault: boolean;
+}
+
 export type priceType = "base" | "additional";
 export type widgetType = "switch" | "radio";
 
