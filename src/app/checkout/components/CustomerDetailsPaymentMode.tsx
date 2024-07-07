@@ -11,6 +11,7 @@ import { AddAddressDialog } from "./AddAddressDialog"
 import { Customer } from "@/types"
 import { ICheckoutForm } from "./CheckoutForm"
 import { Textarea } from "@/components/ui/textarea"
+import Loading from "@/components/custom/Loading"
 
 type PropType = {
     customer: Customer,
@@ -24,7 +25,7 @@ const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }:
 
 
     return (
-        <div className="space-y-5 bg-white p-4 rounded-lg col-span-2">
+        customer ? <div className="space-y-5 bg-white p-4 rounded-lg col-span-2">
             <h1 className="pb-3 text-xl font-semibold text-primary border-b">Customer Details</h1>
             <InputWithLabel type="text" value={customer.name} label="Full Name" disabled={true} />
             <InputWithLabel type="email" value={customer.email} label="Email" disabled={true} />
@@ -84,6 +85,8 @@ const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }:
                 })} value={checkoutForm.comment} id="comment" placeholder="Add a comment" />
 
             </div>
+        </div> : <div className="h-screen">
+            <Loading title="Loading" />
         </div>
     )
 }

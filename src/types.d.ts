@@ -1,4 +1,5 @@
 import { ICoupon } from "./app/checkout/components/OrderSummary";
+import { CartItem } from "./lib/redux/slices/cartSlice";
 
 export interface Tenant {
   id: string;
@@ -91,6 +92,7 @@ export interface Address {
 }
 
 export interface Order {
+  cart?: CartItem[];
   cartItems: CartItems[];
   customerId: string;
   tenantId: string;
@@ -98,4 +100,7 @@ export interface Order {
   comment: string;
   coupon: ICoupon;
   paymentMode: string;
+  paymentStatus?: string;
+  paymentId?: string;
+  total?: number;
 }

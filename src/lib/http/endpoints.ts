@@ -23,3 +23,11 @@ export const createOrder = (orderData: Order, idemKey: string) => {
     },
   });
 };
+
+export const getOrder = (orderId: string, tenantId: string) => {
+  return api.get(`/order/order/${orderId}/${tenantId}`);
+};
+
+export const deleteOrder = (orderId: string, tenantId: string) => {
+  return api.delete(`/order/order/${orderId}/${tenantId}`);
+};

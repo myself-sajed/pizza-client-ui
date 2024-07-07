@@ -45,7 +45,15 @@ const CheckoutForm = () => {
 
             // generate idem key
             const idemKey = idemKeyRef.current ? idemKeyRef.current : (idemKeyRef.current = uuid() + orderData.customerId)
-            return await createOrder(orderData, idemKey)
+            return await createOrder(orderData, idemKey).then((res) => res.data)
+        },
+        onSuccess: (data: { paymentURL: string | null, orderId: string, tenantId: string }) => {
+            if (data.paymentURL) {
+                window.location.href = data.paymentURL
+                return
+            }
+
+            router.replace(`/order-placement-status/?orderId=${data.orderId}&restaurant=${data.tenantId}`)
         }
     })
 
