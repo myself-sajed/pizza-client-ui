@@ -152,12 +152,13 @@ function ProductDialog({ children, product, category }: PropTypes) {
 
     return <Dialog onOpenChange={(e) => setOpen(e)} open={open} >
         <DialogTrigger>{children}</DialogTrigger>
-        <DialogContent className="p-0 rounded max-w-3xl flex flex-col items-start justify-start h-[95vh] gap-0">
+        <DialogContent className="p-0 rounded max-w-3xl flex flex-col items-start justify-start md:h-[95vh] gap-0">
             <div className="flex items-start h-full w-full">
-                <div className="bg-white rounded-l-lg p-8 flex items-center justify-between h-full overflow-hidden">
-                    <Image src={product.image} height={220} width={220} alt="pizza-images" />
+                <div className="hidden bg-white rounded-l-lg p-8 md:flex items-center justify-between h-full overflow-hidden">
+                    <Image className="md:h-[220px] md:w-[220px]" src={product.image} height={220} width={220} alt="pizza-images" />
                 </div>
                 <div className="rounded-r-lg p-8 flex-1 max-h-[85vh] overflow-x-auto w-full">
+                    <Image className="w-[100px] h-[100px] md:hidden block" src={product.image} height={220} width={220} alt="pizza-images" />
                     <div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <p className="text-sm">{product.description}</p>

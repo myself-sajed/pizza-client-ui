@@ -108,9 +108,13 @@ const CheckoutForm = () => {
 
     return (
         isLoading
-            ? <Loading title="Getting customer details" />
-            : isError ? <DisplayError title="Could not load customer details, please try again later..." />
-                : <form onSubmit={handleOrderPlace} className="grid grid-cols-3 gap-5 rounded-lg w-full mt-10">
+            ? <div className="h-screen">
+                <Loading className='h-1/2' title="Getting customer details" />
+            </div>
+            : isError ? <div className='h-screen'>
+                <DisplayError className='h-1/2' title="Could not load customer details, please try again later..." />
+            </div>
+                : <form onSubmit={handleOrderPlace} className="md:grid grid-cols-3 md:space-y-0 space-y-4 gap-5 rounded-lg w-full mt-10">
                     <CustomerDetailsPaymentMode checkoutForm={checkoutForm} setCheckoutForm={setCheckoutForm} customer={customer?.data} />
                     <OrderSummary coupon={coupon} setCoupon={setCoupon} initialCouponState={initialCouponState} isPending={isPending} />
                 </form>

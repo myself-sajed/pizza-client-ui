@@ -27,11 +27,11 @@ const ToppingCard = ({ topping, selectedToppings, setSelectedToppings }: Topping
 
     return (
         <Button onClick={handleToppingsCheck} variant="outline" className={cn(
-            "p-3 flex flex-col h-40 relative border-2",
+            "md:p-3 p-2 flex flex-col md:h-40 h-30 relative border-2",
             isAlreadySelected ? "border-primary" : ""
         )}>
             {isAlreadySelected && <CircleCheck size={19} className="text-primary absolute top-1 right-1 text-sm" />}
-            <Image src={topping.image} alt={topping.name} height={60} width={60} />
+            <Image className="md:h-[60px] md:w-[60px]" src={topping.image} alt={topping.name} height={60} width={60} />
             <p className="mt-3">{topping.name}</p>
             <p className="mt-1">₹{topping.price}</p>
         </Button>

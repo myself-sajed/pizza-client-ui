@@ -94,7 +94,7 @@ const CartPage = () => {
                 {
                     (products?.data?.data?.length > 0) && <div className='mt-10'>
                         <h1 className='text-lg font-bold space-x-3 mb-5'><span>{(cartItems && cartItems?.length) !== 0 ? "Trending Items" : "Suggested Items"}</span> {<Badge className='mb-1'>{products?.data?.data?.length}</Badge>} </h1>
-                        <div className='grid grid-cols-4 gap-4 w-full'>
+                        <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-4 w-full'>
                             {
                                 products?.data?.data?.map((product: Product) => {
                                     return <div key={product._id}>

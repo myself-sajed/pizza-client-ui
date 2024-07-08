@@ -40,7 +40,7 @@ const CustomerDetailsPaymentMode = ({ customer, checkoutForm, setCheckoutForm }:
                         <RadioGroup required onValueChange={(value) => setCheckoutForm((prev) => {
                             const index = parseInt(value, 10);
                             return { ...prev, address: customer.address[index] }
-                        })} className="grid grid-cols-2" defaultValue={`address-0`}>
+                        })} className="grid sm:grid-cols-2 grid-cols-1" defaultValue={`address-0`}>
                             {
                                 customer.address.map((add, index) => {
                                     const address = `${add.addressLine}, ${add.city}, ${add.state} - ${add.pincode}`

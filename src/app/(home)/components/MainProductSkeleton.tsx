@@ -6,7 +6,7 @@ const MainProductSkeleton = ({ forProducts = false, arr = [1, 2, 3, 4] }) => {
         <div className={`my-6 ${!forProducts && 'container'}`}>
             {!forProducts && <Skeleton className="h-10 my-3 w-full bg-[#e2e2e2]" />}
 
-            <div className="grid grid-cols-4 gap-5 w-full">
+            <div className="sm:grid lg:grid-cols-4 md:grid-cols-3 gap-5 w-full space-y-5 sm:space-y-0">
                 {
                     arr.map((item) => {
                         return <div key={item} className="flex flex-col space-y-3">

@@ -32,7 +32,7 @@ const Nav = async () => {
                             <Link href={"/#menu"}>Menu</Link>
                         </li>
                         <li className="hover:text-primary">
-                            <Link href={"/"}>Orders</Link>
+                            <Link href={"/my-orders"}>Orders</Link>
                         </li>
                         <li>
                             <NavCart />

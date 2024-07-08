@@ -5,7 +5,7 @@ import DisplayError from "@/components/custom/DisplayError"
 import Loading from "@/components/custom/Loading"
 import { deleteOrder, getOrder } from "@/lib/http/endpoints"
 import { useQuery } from "@tanstack/react-query"
-import { Bike, Box, CircleCheck, CircleX, CreditCard, IndianRupee, RefreshCcw, RefreshCw } from "lucide-react"
+import { Bike, Box, CircleCheck, CircleX, CreditCard, Home, IndianRupee, RefreshCcw, RefreshCw, Truck } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import {
@@ -87,15 +87,15 @@ const OrderPlacementStatus = () => {
                                             :
                                             <>
                                                 <CircleCheck className="animate-bounce" size={50} />
-                                                <h3 className="scroll-m-20 text-3xl font-semibold tracking-tight">
+                                                <h3 className="scroll-m-20 text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight">
                                                     Order placed successfully..
                                                 </h3>
-                                                <p className="text-gray-500 -mt-1 text-sm">Your order has been placed successfully and will be delivered within <b>45 minutes</b>.</p>
+                                                <p className="text-gray-500 -mt-1 text-xs md:text-sm text-center">Your order has been placed successfully and will be delivered within <b>45 minutes</b>.</p>
                                             </>}
                                     </div>
 
                                     {
-                                        order?.paymentStatus !== "Failed" && <Card className="w-1/2 mx-auto mt-10">
+                                        order?.paymentStatus !== "Failed" && <Card className="lg:w-1/2 md:w-3/4 w-full md:mx-auto mt-10">
                                             <CardHeader>
                                                 <CardTitle className="flex items-center justify-between">
                                                     <p>Order Details</p>
@@ -116,28 +116,44 @@ const OrderPlacementStatus = () => {
                                                         }
                                                     </div>
                                                     <div className="pb-2 border-b">
-                                                        <p className="text-gray-600 text-sm">Order references:</p>
-                                                        <div className="grid grid-cols-2 mt-2 text-sm">
-                                                            <div className="space-y-2">
-                                                                <p className="flex items-center gap-2"><Box size={17} />Order ID</p>
-                                                                <p className="flex items-center gap-2"><CreditCard size={17} />Payment ID</p>
-                                                                <p className="flex items-center gap-2"><IndianRupee size={17} />Payment Mode</p>
-                                                                <p className="flex items-center gap-2"><Bike size={17} />Est. Delivery</p>
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <p><Link className="underline hover:text-blue-600" href={`/order-traking-status/${orderId}`}>{orderId}</Link></p>
-                                                                <p>{order?.paymentId ? `${order.paymentId.slice(0, 24)}...` : "-"}</p>
+                                                        <p className="text-gray-600 text-xs md:text-sm">Order references:</p>
+                                                        <div className="text-sm mt-2 sm:space-y-2 space-y-4">
+                                                            <OrderDetailTile>
+                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500"><Box size={17} />Order ID</p>
+                                                                <p><Link className="underline hover:text-blue-600" href={`/order-tracking-status/${orderId}`}>{orderId}</Link></p>
+                                                            </OrderDetailTile>
+                                                            {
+                                                                order?.paymentMode === "Card" && <OrderDetailTile>
+                                                                    <p className="flex items-center gap-2 sm:text-black text-gray-500 "><CreditCard size={17} />Payment ID</p>
+                                                                    <p>{order?.paymentId ? `${order.paymentId.slice(0, 24)}...` : "N/A"}</p>
+                                                                </OrderDetailTile>
+                                                            }
+                                                            <OrderDetailTile>
+                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><IndianRupee size={17} />Payment Mode</p>
                                                                 <p>{order?.paymentMode}</p>
-                                                                <p>20 mins</p>
-                                                            </div>
+                                                            </OrderDetailTile>
+                                                            <OrderDetailTile>
+                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><Bike size={17} />Est. Delivery</p>
+                                                                <p>20 mins approx.</p>
+                                                            </OrderDetailTile>
+                                                            <OrderDetailTile>
+                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><Home size={17} />Delivery Address</p>
+                                                                <p>{order?.address.addressLine}, {order?.address.city}, {order?.address.state} - {order?.address.pincode}</p>
+                                                            </OrderDetailTile>
                                                         </div>
 
                                                     </div>
                                                 </div>
                                             </CardContent>
-                                            <CardFooter>
-                                                <p className="space-x-5"><span>{order?.paymentStatus === "Pending" ? "Amount to be Paid:" : "Amound Paid: "}</span>
+                                            <CardFooter className="flex items-center justify-between">
+                                                <p className="space-x-2"><span>{order?.paymentStatus === "Pending" ? "Amount to be Paid:" : "Amound Paid: "}</span>
                                                     <b className={order?.paymentStatus === "Paid" ? "text-green-700" : "text-yellow-500"}>₹{order?.total}</b> </p>
+
+                                                <Link href={`/order-tracking-status/${orderId}`}>
+                                                    <Button variant="secondary" className="flex items-center gap-3">
+                                                        <Truck size={17} /><span>Track Order</span>
+                                                    </Button>
+                                                </Link>
                                             </CardFooter>
                                         </Card>
                                     }
@@ -148,7 +164,7 @@ const OrderPlacementStatus = () => {
                                         {
                                             order?.paymentStatus === "Failed" ? <Link href={`/checkout?restaurant=${order.tenantId}`} className="flex items-center gap-4">
                                                 <Button className="flex items-center gap-4">
-                                                    <RefreshCw size={17} /> <span>Place again</span>
+                                                    sm:text-black text-gray-500 <RefreshCw size={17} /> <span>Place again</span>
                                                 </Button>
                                             </Link>
                                                 : <Link href={`/`} className="flex items-center gap-4">
@@ -167,3 +183,10 @@ const OrderPlacementStatus = () => {
 }
 
 export default OrderPlacementStatus
+
+
+const OrderDetailTile = ({ children }: { children: React.ReactNode }) => {
+    return <div className="sm:grid grid-cols-2 md:gap-2 gap-4 items-start">
+        {children}
+    </div>
+}

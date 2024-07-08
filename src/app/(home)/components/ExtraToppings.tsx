@@ -39,7 +39,7 @@ const ExtraToppings = ({ selectedToppings, setSelectedToppings }: ToppingsPropTy
                         <div>
                             <p className="text-sm font-medium inline">Choose the toppings</p> <Badge>{toppings?.data?.length || 0}</Badge>
                             {toppings?.data.length !== 0
-                                ? <div className="grid grid-cols-3 gap-4 mt-2">
+                                ? <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-2">
                                     {
                                         toppings?.data.map((topping: Topping) => {
                                             return <ToppingCard topping={topping} key={topping._id} selectedToppings={selectedToppings} setSelectedToppings={setSelectedToppings} />
