@@ -92,6 +92,7 @@ export interface Address {
 }
 
 export interface Order {
+  _id?: string;
   cart?: CartItem[];
   cartItems: CartItems[];
   customerId: string;
@@ -103,4 +104,14 @@ export interface Order {
   paymentStatus?: string;
   paymentId?: string;
   total?: number;
+}
+
+export enum OrderStatus {
+  RECEIVED = "Received",
+  CONFIRMED = "Confirmed",
+  PREPARING = "Preparing",
+  READY_FOR_DELIVERY = "Ready for delivery",
+  OUT_FOR_DELIVERY = "Out for delivery",
+  DELIVERED = "Delivered",
+  FAILED = "Failed",
 }

@@ -88,7 +88,7 @@ const OrderPlacementStatus = () => {
                                             <>
                                                 <CircleCheck className="animate-bounce" size={50} />
                                                 <h3 className="scroll-m-20 text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight">
-                                                    Order placed successfully..
+                                                    Order placed successfully.
                                                 </h3>
                                                 <p className="text-gray-500 -mt-1 text-xs md:text-sm text-center">Your order has been placed successfully and will be delivered within <b>45 minutes</b>.</p>
                                             </>}

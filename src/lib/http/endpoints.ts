@@ -28,6 +28,10 @@ export const getOrder = (orderId: string, tenantId: string) => {
   return api.get(`/order/order/${orderId}/${tenantId}`);
 };
 
+export const getMyOrder = () => {
+  return api.get(`/order/order/getMyOrders`);
+};
+
 export const deleteOrder = (orderId: string, tenantId: string) => {
   return api.delete(`/order/order/${orderId}/${tenantId}`);
 };
