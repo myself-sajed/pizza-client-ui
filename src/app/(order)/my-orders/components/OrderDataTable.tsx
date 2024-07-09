@@ -44,6 +44,7 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Order } from "@/types"
 import moment from 'moment'
+import GoButton from "@/components/custom/GoButton"
 
 const OrderDataTable = () => {
     const { data: orders, isLoading } = useQuery({
@@ -95,7 +96,7 @@ const OrderDataTable = () => {
                         <div className="h-screen">
                             <Loading className="h-1/2" title="Fetching your orders" />
                         </div>
-                    ) : orders?.length > 0 ? (
+                    ) : orders ? (
                         <div>
                             <div className="flex items-center py-4 mt-2">
                                 <Input
@@ -174,9 +175,12 @@ const OrderDataTable = () => {
                                             <TableRow>
                                                 <TableCell
                                                     colSpan={columns.length}
-                                                    className="h-24 text-center"
+                                                    className="h-40 text-center"
                                                 >
-                                                    No results.
+                                                    <div className="mt-10">
+                                                        <p>You have not ordered anything yet.</p>
+                                                        <GoButton title="Order Now" className="mt-5" />
+                                                    </div>
                                                 </TableCell>
                                             </TableRow>
                                         )}
