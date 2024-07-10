@@ -83,7 +83,7 @@ const OrderDataTable = () => {
 
     return (
         <div className="w-full">
-            <div className="md:mx-20 m-10">
+            <div className="md:mx-20 sm:m-10 m-5">
                 <div className="flex items-center gap-4 text-primary ">
                     <Pizza size={30} />
                     <h3 className="scroll-m-20 text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight">
