@@ -231,7 +231,7 @@ const cartFilter: FilterFn<Order> = (row, columnId, filterValue) => {
 const orderStatusColors = {
     "Received": 'text-yellow-600',
     "Confirmed": 'text-gray-600',
-    "Preparing": 'text-blue-600',
+    "Prepared": 'text-blue-600',
     "Out for delivery": 'text-sky-600',
     "Delivered": 'text-green-600',
     "Failed": 'text-red-600',
