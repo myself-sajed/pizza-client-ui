@@ -232,7 +232,6 @@ const orderStatusColors = {
     "Received": 'text-yellow-600',
     "Confirmed": 'text-gray-600',
     "Preparing": 'text-blue-600',
-    "Ready for delivery": 'text-teal-600',
     "Out for delivery": 'text-sky-600',
     "Delivered": 'text-green-600',
     "Failed": 'text-red-600',
