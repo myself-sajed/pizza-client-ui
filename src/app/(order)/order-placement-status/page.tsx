@@ -5,7 +5,7 @@ import DisplayError from "@/components/custom/DisplayError"
 import Loading from "@/components/custom/Loading"
 import { deleteOrder, getOrder } from "@/lib/http/endpoints"
 import { useQuery } from "@tanstack/react-query"
-import { Bike, Box, CircleCheck, CircleX, CreditCard, Home, IndianRupee, RefreshCcw, RefreshCw, Truck } from "lucide-react"
+import { CircleCheck, CircleX, RefreshCw, Truck } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import {
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect } from "react"
 import { useAppDispatch } from "@/lib/redux/hooks"
 import GoButton from "@/components/custom/GoButton"
+import OrderReferences from "./components/OrderReferences"
 
 
 const OrderPlacementStatus = () => {
@@ -115,34 +116,7 @@ const OrderPlacementStatus = () => {
                                                             })
                                                         }
                                                     </div>
-                                                    <div className="pb-2 border-b">
-                                                        <p className="text-gray-600 text-xs md:text-sm">Order references:</p>
-                                                        <div className="text-sm mt-2 sm:space-y-2 space-y-4">
-                                                            <OrderDetailTile>
-                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500"><Box size={17} />Order ID</p>
-                                                                <p><Link className="underline hover:text-blue-600" href={`/order-tracking-status/${orderId}`}>{orderId}</Link></p>
-                                                            </OrderDetailTile>
-                                                            {
-                                                                order?.paymentMode === "Card" && <OrderDetailTile>
-                                                                    <p className="flex items-center gap-2 sm:text-black text-gray-500 "><CreditCard size={17} />Payment ID</p>
-                                                                    <p>{order?.paymentId ? `${order.paymentId.slice(0, 24)}...` : "N/A"}</p>
-                                                                </OrderDetailTile>
-                                                            }
-                                                            <OrderDetailTile>
-                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><IndianRupee size={17} />Payment Mode</p>
-                                                                <p>{order?.paymentMode}</p>
-                                                            </OrderDetailTile>
-                                                            <OrderDetailTile>
-                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><Bike size={17} />Est. Delivery</p>
-                                                                <p>20 mins approx.</p>
-                                                            </OrderDetailTile>
-                                                            <OrderDetailTile>
-                                                                <p className="flex items-center gap-2 sm:text-black text-gray-500 "><Home size={17} />Delivery Address</p>
-                                                                <p>{order?.address.addressLine}, {order?.address.city}, {order?.address.state} - {order?.address.pincode}</p>
-                                                            </OrderDetailTile>
-                                                        </div>
-
-                                                    </div>
+                                                    <OrderReferences orderId={orderId} order={order} />
                                                 </div>
                                             </CardContent>
                                             <CardFooter className="flex items-center justify-between">
