@@ -102,6 +102,7 @@ export interface Order {
   coupon: ICoupon;
   paymentMode: string;
   paymentStatus?: string;
+  orderStatus?: string;
   paymentId?: string;
   total?: number;
 }

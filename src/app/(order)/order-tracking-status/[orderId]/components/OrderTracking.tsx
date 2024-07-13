@@ -8,7 +8,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { getOrder } from "@/lib/http/endpoints"
 import { Order } from "@/types"
 import { useQuery } from "@tanstack/react-query"
-import { Bike, CookingPot, NotebookPen, PackageCheck, Pizza, ThumbsUp, Truck, Home } from "lucide-react"
+import { Bike, Truck, Home } from "lucide-react"
+import OrderStatusChanger from "./OrderStatusChanger"
+import OrderStepper from "./OrderStatusChanger"
 
 const OrderTracking = ({ orderId, restaurant }: { orderId: string, restaurant: string }) => {
 
@@ -17,35 +19,11 @@ const OrderTracking = ({ orderId, restaurant }: { orderId: string, restaurant: s
     const { data: order, isLoading, isError } = useQuery({
         queryKey: [orderId, restaurant],
         queryFn: () => getOrder(orderId!, restaurant!).then(res => res.data as Order),
-        enabled: (orderId && restaurant) ? true : false
+        enabled: (orderId && restaurant) ? true : false,
+        refetchOnWindowFocus: false,
+        staleTime: Infinity,
     })
 
-    const steps = [
-        {
-            label: "Received",
-            icon: NotebookPen
-        },
-        {
-            label: "Confirmed",
-            icon: ThumbsUp
-        },
-        {
-            label: "Preparing",
-            icon: CookingPot
-        },
-        {
-            label: "Ready for delivery",
-            icon: PackageCheck
-        },
-        {
-            label: "Out for Delivery",
-            icon: Truck
-        },
-        {
-            label: "Delivered",
-            icon: Pizza
-        },
-    ] satisfies StepItem[]
 
     return (
         <div>
@@ -70,19 +48,11 @@ const OrderTracking = ({ orderId, restaurant }: { orderId: string, restaurant: s
                                     <Card>
                                         <CardContent className="p-3 my-3">
                                             <p className="text-gray-600 text-xs md:text-sm">Order status</p>
-
-                                            <Stepper className="mt-4" initialStep={1} steps={steps} variant="circle-alt" >
-                                                {
-                                                    steps.map((item) => {
-                                                        return <Step key={item.label} label={item.label}
-                                                            icon={item.icon} checkIcon={item.icon} />
-                                                    })
-                                                }
-                                            </Stepper>
+                                            <OrderStepper orderId={orderId} restaurant={restaurant} />
                                         </CardContent>
                                     </Card>
 
-                                    <div className="grid md:grid-cols-2 gap-3">
+                                    <div className="grid md:grid-cols-2 gap-4">
                                         <Card>
                                             <CardContent className="p-3 mt-3">
                                                 <OrderReferences orderId={orderId} order={order} />

@@ -24,8 +24,12 @@ export const createOrder = (orderData: Order, idemKey: string) => {
   });
 };
 
-export const getOrder = (orderId: string, tenantId: string) => {
-  return api.get(`/order/order/${orderId}/${tenantId}`);
+export const getOrder = (
+  orderId: string,
+  tenantId: string,
+  select: string = ""
+) => {
+  return api.get(`/order/order/${orderId}/${tenantId}?select=${select}`);
 };
 
 export const getMyOrder = () => {
