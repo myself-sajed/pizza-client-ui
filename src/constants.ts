@@ -1,5 +1,10 @@
 export const apiURL = `${process.env.BACKEND_URI}`;
 export const clientAPIURL = `${process.env.NEXT_PUBLIC_BACKEND_URI}`;
+export const roles = {
+  ADMIN: "Admin",
+  MANAGER: "Manager",
+  CUSTOMER: "Customer",
+};
 
 export const statesInIndia = {
   "Andhra Pradesh": [

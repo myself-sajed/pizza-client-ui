@@ -4,11 +4,20 @@ import { apiURL, roles } from "@/constants";
 import cookie from "cookie";
 import { cookies } from "next/headers";
 
-const loginAction = async (prevState: any, formData: FormData) => {
+const signupAction = async (prevState: any, formData: FormData) => {
+  const name = formData.get("name");
   const email = formData.get("email");
   const password = formData.get("password");
+  const cpassword = formData.get("cpassword");
 
-  if (!email || !password) {
+  if (cpassword !== password) {
+    return {
+      status: "error",
+      message: "Passwords do not match.",
+    };
+  }
+
+  if (!email || !password || !name) {
     return {
       status: "error",
       message: "Please fill all the fields",
@@ -16,11 +25,11 @@ const loginAction = async (prevState: any, formData: FormData) => {
   }
 
   try {
-    const link = `${apiURL}/auth/auth/login`;
+    const link = `${apiURL}/auth/auth/register`;
     const res = await fetch(link, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name, role: roles.CUSTOMER }),
     });
 
     if (!res.ok) {
@@ -28,15 +37,6 @@ const loginAction = async (prevState: any, formData: FormData) => {
       return {
         status: "error",
         message: error.errors[0].msg,
-      };
-    }
-
-    const { user } = await res.json();
-
-    if (user.role !== roles.CUSTOMER) {
-      return {
-        status: "error",
-        message: "Sorry! Only customers can login.",
       };
     }
 
@@ -51,7 +51,7 @@ const loginAction = async (prevState: any, formData: FormData) => {
     if (!accessTokenStr || !refreshTokenStr) {
       return {
         status: "error",
-        message: "Login failed",
+        message: "Registration failed",
       };
     }
 
@@ -79,7 +79,7 @@ const loginAction = async (prevState: any, formData: FormData) => {
 
     return {
       status: "success",
-      message: "Login successful",
+      message: "Registration & Login successful",
     };
   } catch (error) {
     return {
@@ -89,4 +89,4 @@ const loginAction = async (prevState: any, formData: FormData) => {
   }
 };
 
-export default loginAction;
+export default signupAction;
